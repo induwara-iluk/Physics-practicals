@@ -1,0 +1,58 @@
+{
+    "year": 2019,
+    "questionNumber": "3",
+    "mainQuestionText": "A standard spectrometer, a glass prism, and a monochromatic light source are used to determine the refractive index of the glass.",
+    "subparts": [
+        "(a) A few necessary adjustments are to be done to the spectrometer before starting to take measurements.",
+        "(i) What is the adjustment that should be done to the eyepiece?",
+        "(ii) Telescope is pointed to a distant object and it is adjusted until a clear image of the object is formed on the cross wires. What is the purpose of this adjustment?",
+        "(iii) What is the adjustment that should be done to the slit of the collimator?",
+        "(iv) The telescope is brought in line with the collimator. Then the collimator is adjusted until a sharp image of the slit is formed on the cross wires. What is the purpose of this adjustment?"
+    ],
+    "subQuestions": [
+        {
+            "id": "a_i",
+            "part": "(a)(i)",
+            "text": "What is the adjustment that should be done to the eyepiece?",
+            "marks": 1,
+            "answer": "Eye piece should be adjusted to obtain a clear view of the cross wires"
+        },
+        {
+            "id": "a_ii",
+            "part": "(a)(ii)",
+            "text": "Telescope is pointed to a distant object and it is adjusted until a clear image of the object is formed on the cross wires. What is the purpose of this adjustment?",
+            "marks": 2,
+            "answer": "To receive parallel beam/rays of light."
+        },
+        {
+            "id": "a_iii",
+            "part": "(a)(iii)",
+            "text": "What is the adjustment that should be done to the slit of the collimator?",
+            "marks": 1,
+            "answer": "The slit should be adjusted to be narrow and vertical, (and illuminated by a light source.)"
+        },
+        {
+            "id": "a_iv",
+            "part": "(a)(iv)",
+            "text": "The telescope is brought in line with the collimator. Then the collimator is adjusted until a sharp image of the slit is formed on the cross wires. What is the purpose of this adjustment?",
+            "marks": 2,
+            "answer": "To obtain a parallel beam/rays of light from the collimator/to the telescope."
+        }
+    ],
+    "tags": [],
+    "title": "",
+    "type": "past",
+    "source": {
+        "type": "past_paper",
+        "exam": "GCE Advanced Level",
+        "subject": "Physics",
+        "year": 2019,
+        "paper": 1,
+        "variant": "English",
+        "questionNumber": 3
+    },
+    "markingScheme": [],
+    "answers": [],
+    "figures": [],
+    "images": []
+}

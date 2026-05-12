@@ -196,7 +196,7 @@ export default function LandingPage() {
                   </div>
                 ) : (
                   dbQuestions.map((q) => {
-                    const targetHref = q.practicalId?.slug ? `/practical/${q.practicalId.slug}#question-${q._id}` : '#';
+                    const targetHref = `/question/${q._id}`;
                     return (
                       <Link key={q._id} href={targetHref} className="list-item">
                         <div className="item-thumb" style={{ background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

@@ -1,0 +1,72 @@
+{
+    "year": 2019,
+    "questionNumber": "3",
+    "mainQuestionText": "A standard spectrometer, a glass prism, and a monochromatic light source are used to determine the refractive index of the glass.",
+    "subparts": [
+        "(a)",
+        "(b)",
+        "(c)"
+    ],
+    "subQuestions": [
+        {
+            "id": "a_i",
+            "part": "(a)(i)",
+            "text": "What is the adjustment that should be done to the eyepiece?",
+            "marks": 1,
+            "answer": "Eye piece should be adjusted to obtain a clear view of the cross wires"
+        },
+        {
+            "id": "a_ii",
+            "part": "(a)(ii)",
+            "text": "Telescope is pointed to a distant object and it is adjusted until a clear image of the object is formed on the cross wires. What is the purpose of this adjustment?",
+            "marks": 2,
+            "answer": "To receive parallel beam/rays of light"
+        },
+        {
+            "id": "a_iii",
+            "part": "(a)(iii)",
+            "text": "What is the adjustment that should be done to the slit of the collimator?",
+            "marks": 1,
+            "answer": "The slit should be adjusted to be narrow and vertical, (and illuminated by a light source.)"
+        },
+        {
+            "id": "a_iv",
+            "part": "(a)(iv)",
+            "text": "The telescope is brought in line with the collimator. Then the collimator is adjusted until a sharp image of the slit is formed on the cross wires. What is the purpose of this adjustment?",
+            "marks": 2,
+            "answer": "To obtain a parallel beam/rays of light from the collimator/to the telescope."
+        },
+        {
+            "id": "b_i",
+            "part": "(b)(i)",
+            "text": "When the telescope is at position T\u2081, the screw Q is adjusted to obtain a symmetric image of the slit on the cross wires. When the telescope is moved to the position T\u2082, which screw should be adjusted to get a symmetric image of the slit?",
+            "marks": 1,
+            "answer": "Screw P",
+            "imageUrl": "/Extracted_Diagrams/2019_3_b_i.jpg"
+        },
+        {
+            "id": "b_ii",
+            "part": "(b)(ii)",
+            "text": "A student stated that the levelling of the prism table could easily be done using a spirit level. Is this statement correct? Briefly explain the answer.",
+            "marks": 2,
+            "answer": "No.\nPrism table should be leveled parallel to the optical axis of the collimator and the telescope, not to level parallel to the horizontal / to the table.\nOR\nPurpose of leveling the prism table is to make it parallel to the light beam of the collimator and the telescope, not to the horizontal.\nOR\nLeveling the prism table parallel to the horizontal will not make it parallel to the light beam of the collimator and the telescope. (For any correct explanation)"
+        },
+        {
+            "id": "c",
+            "part": "(c)",
+            "text": "When the telescope is at positions T\u2081 and T\u2082, the readings of the spectrometer are 279\u00b0 58' and 38\u00b0 02', respectively. Note that the telescope passes the zero of the main scale when it is moved from T\u2081 to T\u2082. Calculate the prism angle A.",
+            "marks": 2,
+            "answer": "2A = 360\u00b0 \u2013 T\u2081 + T\u2082 = 360\u00b0 \u2013 279\u00b0 58' + 38\u00b0 02'\n= 118\u00b0 04'\nA = 59\u00b0 02'"
+        }
+    ],
+    "tags": [],
+    "title": "Spectrometer and Prism Refraction",
+    "type": "past",
+    "source": {
+        "type": "past_paper",
+        "exam": "GCE Advanced Level",
+        "subject": "Physics",
+        "year": 2019,
+        "variant": "English"
+    }
+}

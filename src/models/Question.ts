@@ -17,11 +17,14 @@ export interface IQuestion extends Document {
   difficulty: string;
   mainQuestionText: string;
   figures: { label: string; imageUrl: string }[];
+  answer?: string;
   subQuestions: {
     id: string;
     part: string;
     text: string;
     imageUrl?: string;
+    marks?: number;
+    answer?: string;
   }[];
   markingScheme: { subQuestionId: string; answer: string }[];
   answers: { subQuestionId: string; latex: string }[];
@@ -49,11 +52,14 @@ const QuestionSchema: Schema = new Schema({
     label: { type: String },
     imageUrl: { type: String }
   }],
+  answer: { type: String },
   subQuestions: [{
     id: { type: String },
     part: { type: String },
     text: { type: String },
-    imageUrl: { type: String }
+    imageUrl: { type: String },
+    marks: { type: Number },
+    answer: { type: String }
   }],
   markingScheme: [{
     subQuestionId: { type: String },

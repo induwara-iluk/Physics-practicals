@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import QuestionDisplay from '@/components/QuestionDisplay';
 import { practicalsList, slugify } from '@/data/practicals';
 import { notFound } from 'next/navigation';
 
@@ -151,53 +152,7 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
             </h2>
             <div className="questions-list">
               {questions.map((q, idx) => (
-                <div key={q._id} id={`question-${q._id}`} className="question-card" style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '0.75rem', marginBottom: '1.5rem' }}>
-                  <div className="q-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                    <h3 style={{ fontSize: '1.2rem', color: 'white' }}>
-                      {q.title || `Question ${q.questionNumber || idx + 1}`}
-                    </h3>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--primary)', border: '1px solid var(--primary)', padding: '0.2rem 0.5rem', borderRadius: '0.25rem' }}>
-                      {q.source?.year} • {q.source?.exam} • {q.difficulty?.toUpperCase()}
-                    </span>
-                  </div>
-                  
-                  <div className="q-text" style={{ color: 'var(--text-muted)', marginBottom: '1rem', whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
-                    {q.mainQuestionText}
-                  </div>
-
-                  {q.figures && q.figures.length > 0 && (
-                    <div className="q-figures" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', marginBottom: '1.5rem', paddingBottom: '0.5rem' }}>
-                      {q.figures.map((fig: any, i: number) => (
-                        <div key={i} style={{ minWidth: '250px' }}>
-                          <img src={fig.imageUrl} alt={fig.label || `Figure ${i+1}`} style={{ width: '100%', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} />
-                          {fig.label && <p style={{ fontSize: '0.85rem', textAlign: 'center', marginTop: '0.5rem', color: 'var(--text-muted)' }}>{fig.label}</p>}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {q.subQuestions && q.subQuestions.length > 0 && (
-                    <div className="q-subparts" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      {q.subQuestions.map((sq: any, i: number) => (
-                        <div key={i} className="sq-card" style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '0.5rem', borderLeft: '3px solid rgba(255,255,255,0.1)' }}>
-                          <div style={{ display: 'flex', gap: '1rem' }}>
-                            <span style={{ fontWeight: 'bold', color: 'white', minWidth: '35px' }}>{sq.part}</span>
-                            <div style={{ color: 'var(--text-muted)', whiteSpace: 'pre-wrap', flex: 1, lineHeight: '1.5' }}>{sq.text}</div>
-                          </div>
-                          {sq.imageUrl && (
-                            <img src={sq.imageUrl} alt="subpart image" style={{ maxWidth: '100%', marginTop: '1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  
-                  {q.marks > 0 && (
-                    <div style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'right', fontWeight: 'bold' }}>
-                      [{q.marks} Marks]
-                    </div>
-                  )}
-                </div>
+                <QuestionDisplay key={q._id} q={q} idx={idx} />
               ))}
             </div>
           </div>

@@ -1,0 +1,79 @@
+{
+    "year": 2020,
+    "questionNumber": "1",
+    "mainQuestionText": "You are asked to determine the spring constant (k) of a helical spring by plotting a graph of extension against load. In the experimental setup shown in the figure, one end of the spring is attached to a scale pan and the other end is firmly connected to a stand. Assume that the masses of the scale pan and the spring are negligible.",
+    "subparts": [
+        "(a)",
+        "(b)(i)",
+        "(b)(ii)",
+        "(b)(iii)",
+        "(c)",
+        "(d)",
+        "(e)"
+    ],
+    "subQuestions": [
+        {
+            "id": "a",
+            "part": "(a)",
+            "text": "When a force F is applied to the spring, the length of the spring is increased by an amount x. Write down an expression for F in terms of k and x.",
+            "marks": 2,
+            "answer": "F = kx (or \u2013kx)",
+            "imageUrl": "/Extracted_Diagrams/2020_1_a.jpg"
+        },
+        {
+            "id": "b_i",
+            "part": "(b)(i)",
+            "text": "The table below gives the values of mass (M) placed on the pan and the corresponding readings of the pointer. Complete the extension column in the table.",
+            "marks": 2,
+            "answer": "All entries correct\n(At least three entries correct 01 mark)",
+            "imageUrl": "/Extracted_Diagrams/2020_1_b_i.jpg"
+        },
+        {
+            "id": "b_ii",
+            "part": "(b)(ii)",
+            "text": "Plot a graph of extension x (cm) against mass on the scale pan M (gram) on the following grid.",
+            "marks": 5,
+            "answer": "Selecting the proper scale for M\n(No other selections are accepted)\nSelecting the proper scale for x\n(No other selections are accepted)\nMarking of at least five points correctly on the grid.\n[Points should be marked by dots (with or without circles) OR crosses]\n(At least three points are correctly marked - 01 mark)\nFor drawing the straight line graph as shown.\n(No other lines are accepted)",
+            "imageUrl": "/Extracted_Diagrams/2020_1_b_ii.jpg"
+        },
+        {
+            "id": "b_iii",
+            "part": "(b)(iii)",
+            "text": "Using the graph drawn above determine the value of k in SI units.",
+            "marks": 5,
+            "answer": "Gradient = 6.0\u22120.8 / 300\u221240 = 5.2 / 260\n(Students can select any two points lying on the graph to determine the gradient; disregard the units of the numerator and the denominator)\nIdentifying k = g / gradient OR [OR 1 / gradient]\nk = 50 N m\u207b\u00b9 (OR 50 kg s\u207b\u00b2)\n(For correct value and the correct unit)\n[Value correct, unit incorrect \u2013 01 mark]"
+        },
+        {
+            "id": "c",
+            "part": "(c)",
+            "text": "Write down two essential experimental steps that you have to follow when taking readings.",
+            "marks": 2,
+            "answer": "(1) Loading of masses must be done gently OR readings should be noted only when the pointer comes to rest/equilibrium.\n(2) The masses should be placed at the center of the pan.\n(3) Pointer should not touch the metre ruler OR the pointer should move above/over the ruler OR pointer should not be far away/should be close to the metre ruler.\n(4) Record the corresponding readings of the pointer while loading and unloading (and take their average)\n(5) Look straight through the pointer when taking readings OR take readings without parallax errors.\n(6) The extension of the spring should not exceed the proportional limit.\n(Any two correct steps \u2013 01 mark)"
+        },
+        {
+            "id": "d",
+            "part": "(d)",
+            "text": "To maintain the percentage error of k within 5% what should be the maximum error (\u0394k) of the value of k?",
+            "marks": 2,
+            "answer": "\u0394k / 50 x 100 = 5\n(for the correct expression or substitution)\n\u0394k = 2.5 N m\u207b\u00b9\n[When awarding this mark, disregard the unit]"
+        },
+        {
+            "id": "e",
+            "part": "(e)",
+            "text": "Another spring of negligible mass is connected in series with the above spring and the experiment is repeated with the same masses. Draw the expected graph in this situation on the same grid in (b) (ii) above, and label it as Q. (Extensions will be increased for the same mass. Therefore, the effective spring constant would be reduced.)",
+            "marks": 2,
+            "answer": "Straight line with a higher gradient/above the line drawn earlier\nLine with no intercept/going through the origin (OR seem to go through the origin).",
+            "imageUrl": "/Extracted_Diagrams/2020_1_e.jpg"
+        }
+    ],
+    "tags": [],
+    "title": "",
+    "type": "past",
+    "source": {
+        "type": "past_paper",
+        "exam": "GCE Advanced Level",
+        "subject": "Physics",
+        "year": 2020,
+        "variant": "English"
+    }
+}

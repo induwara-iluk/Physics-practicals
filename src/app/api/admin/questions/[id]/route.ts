@@ -11,7 +11,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const resolvedParams = await params;
     const { id } = resolvedParams;
     
-    const question = await Question.findById(id);
+    const question = await Question.findById(id).populate('practicalId', 'title slug');
     if (!question) {
       return NextResponse.json({ error: 'Question not found' }, { status: 404 });
     }

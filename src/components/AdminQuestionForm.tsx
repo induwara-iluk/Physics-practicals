@@ -33,9 +33,10 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
 
   // Arrays
   const [figures, setFigures] = useState<{label: string, imageUrl: string}[]>([]);
-  const [subQuestions, setSubQuestions] = useState<{id: string, part: string, text: string, imageUrl: string}[]>([]);
+  const [subQuestions, setSubQuestions] = useState<{id: string, part: string, text: string, imageUrl: string, marks?: number, answer?: string}[]>([]);
   const [markingScheme, setMarkingScheme] = useState<{subQuestionId: string, answer: string}[]>([]);
   const [answers, setAnswers] = useState<{subQuestionId: string, latex: string}[]>([]);
+  const [topAnswer, setTopAnswer] = useState('');
 
   useEffect(() => {
     if (selectedQuestionId === 'new') {
@@ -70,6 +71,7 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
           
           setFigures(data.figures || []);
           setSubQuestions(data.subQuestions || []);
+          setTopAnswer(data.answer || '');
           setMarkingScheme(data.markingScheme || []);
           setAnswers(data.answers || []);
         } else {
@@ -94,6 +96,7 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
     setMainQuestionText('');
     setFigures([]);
     setSubQuestions([]);
+    setTopAnswer('');
     setMarkingScheme([]);
     setAnswers([]);
   };
@@ -143,6 +146,7 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
         difficulty,
         mainQuestionText,
         figures,
+        answer: topAnswer,
         subQuestions,
         markingScheme,
         answers
@@ -176,7 +180,9 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
   if (loading) return <div className="loading">Loading database entry...</div>;
 
   return (
-    <form onSubmit={handleSave} className="q-form">
+    <div className="editor-layout">
+      <div className="form-side">
+        <form onSubmit={handleSave} className="q-form">
       <div className="form-header">
         <h2>{selectedQuestionId === 'new' ? 'Create New Question' : 'Editing Question'}</h2>
         {message && <div className="status-message">{message}</div>}
@@ -228,6 +234,11 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
         <textarea value={mainQuestionText} onChange={e => setMainQuestionText(e.target.value)} rows={4} className="title-input" required />
       </div>
 
+      <div className="form-group">
+        <label>Top Level Answer (Optional)</label>
+        <textarea value={topAnswer} onChange={e => setTopAnswer(e.target.value)} rows={2} className="title-input" />
+      </div>
+
       {/* Sub Questions */}
       <fieldset className="q-fieldset">
         <legend>Sub Questions (a, b, i, ii)</legend>
@@ -238,19 +249,29 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
               <div className="form-group"><label>Part Label</label><input type="text" value={sq.part} onChange={e => { const n = [...subQuestions]; n[idx].part = e.target.value; setSubQuestions(n); }} className="title-input" placeholder="(a)(i)"/></div>
             </div>
             <div className="form-group">
-              <label>Text</label>
+              <label>Question Text</label>
               <textarea value={sq.text} onChange={e => { const n = [...subQuestions]; n[idx].text = e.target.value; setSubQuestions(n); }} rows={2} className="title-input"/>
             </div>
             <div className="form-group">
-              <label>Image Upload</label>
-              <div className="upload-row">
-                <input type="file" onChange={async (e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    const url = await handleUploadImage(e.target.files[0]);
-                    if (url) { const n = [...subQuestions]; n[idx].imageUrl = url; setSubQuestions(n); }
-                  }
-                }} />
-                {sq.imageUrl && <img src={sq.imageUrl} alt="preview" className="preview-img" />}
+              <label>Answer (Text/LaTeX)</label>
+              <textarea value={sq.answer || ''} onChange={e => { const n = [...subQuestions]; n[idx].answer = e.target.value; setSubQuestions(n); }} rows={2} className="title-input"/>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Marks</label>
+                <input type="number" value={sq.marks || ''} onChange={e => { const n = [...subQuestions]; n[idx].marks = parseInt(e.target.value) || 0; setSubQuestions(n); }} className="title-input" />
+              </div>
+              <div className="form-group">
+                <label>Image Upload</label>
+                <div className="upload-row">
+                  <input type="file" onChange={async (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const url = await handleUploadImage(e.target.files[0]);
+                      if (url) { const n = [...subQuestions]; n[idx].imageUrl = url; setSubQuestions(n); }
+                    }
+                  }} />
+                  {sq.imageUrl && <img src={sq.imageUrl} alt="preview" className="preview-img" />}
+                </div>
               </div>
             </div>
             <button type="button" onClick={() => { const n = [...subQuestions]; n.splice(idx, 1); setSubQuestions(n); }} className="remove-btn">Remove Sub Question</button>
@@ -280,8 +301,31 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
         .form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
         .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .status-message { padding: 0.5rem 1rem; background: rgba(34,197,94,0.1); color: #4ade80; border-radius: 0.5rem; }
-        .save-btn { background: white; color: black; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; }
-      `}</style>
-    </form>
+          .save-btn { background: white; color: black; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; }
+          .editor-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start; }
+          @media (max-width: 1024px) {
+            .editor-layout { grid-template-columns: 1fr; }
+          }
+        `}</style>
+      </form>
+      </div>
+
+      <div className="ai-side glass" style={{ padding: '1.5rem', borderRadius: '1rem', borderLeft: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '1rem', position: 'sticky', top: '1rem' }}>
+        <h3 style={{ margin: 0, color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          ✨ AI Question Extractor
+        </h3>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+          Upload an image of a question paper. The AI will read it and fill the form fields automatically.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Upload Question Image</label>
+          <input type="file" accept="image/*" className="title-input" />
+        </div>
+        <button type="button" className="save-btn" style={{ background: 'var(--primary)', color: 'white', padding: '0.75rem', marginTop: '0.5rem', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          Extract with AI
+        </button>
+      </div>
+    </div>
   );
 }
