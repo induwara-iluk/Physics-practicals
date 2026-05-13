@@ -16,12 +16,12 @@ export default function LandingPage() {
       fetch('/api/practicals').then(res => res.json()),
       fetch('/api/admin/questions').then(res => res.json())
     ])
-    .then(([practicalsData, questionsData]) => {
-      if (Array.isArray(practicalsData)) setDbPracticals(practicalsData);
-      if (Array.isArray(questionsData)) setDbQuestions(questionsData);
-      setLoading(false);
-    })
-    .catch(() => setLoading(false));
+      .then(([practicalsData, questionsData]) => {
+        if (Array.isArray(practicalsData)) setDbPracticals(practicalsData);
+        if (Array.isArray(questionsData)) setDbQuestions(questionsData);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   const categories = ['All', ...new Set(dbPracticals.map(p => p.category))];
@@ -41,45 +41,8 @@ export default function LandingPage() {
 
       <div className="main-container">
         {/* Header */}
-        <header className="header animate-fade">
-          <div className="badge">
-            <span className="badge-dot" />
-            42 Official A/L Practicals
-          </div>
-
-          <h1 className="title">
-            Master<br />Physics Labs
-          </h1>
-
-          <p className="subtitle">
-            The definitive repository for Advanced Level Physics practicals —
-            theories, methods, and marking schemes, beautifully organized.
-          </p>
-
-          {/* Search */}
-          <div className="search-wrap">
-            <div className="search-box">
-              <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search experiments…"
-                className="search-input"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              {search && (
-                <button onClick={() => setSearch('')} className="clear-btn" aria-label="Clear search">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              )}
-            </div>
-          </div>
-        </header>
+        {/* Space below Navbar */}
+        <div style={{ height: '6rem' }}></div>
 
         {/* Body */}
         <div className="body-layout">
@@ -101,48 +64,27 @@ export default function LandingPage() {
 
           {/* List */}
           <main className="list-panel animate-up" style={{ animationDelay: '0.25s' }}>
-            <div className="view-tabs" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <button 
-                onClick={() => setViewMode('practicals')}
-                style={{
-                  background: viewMode === 'practicals' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                  color: viewMode === 'practicals' ? 'white' : 'var(--text-muted)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.5rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-              >
-                Practicals
-              </button>
-              <button 
-                onClick={() => setViewMode('questions')}
-                style={{
-                  background: viewMode === 'questions' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                  color: viewMode === 'questions' ? 'white' : 'var(--text-muted)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.5rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-              >
-                Questions
-              </button>
-            </div>
-
-            <div className="list-header">
-              <span className="list-heading">
-                {viewMode === 'practicals' 
-                  ? (activeCategory === 'All' ? 'All Practicals' : activeCategory)
-                  : 'All Past & Model Questions'}
-              </span>
-              <span className="list-count">
-                {viewMode === 'practicals' ? filteredPracticals.length : dbQuestions.length}
-              </span>
+            <div className="panel-search" style={{ marginBottom: '1.5rem' }}>
+              <div className="search-box" style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search experiments…"
+                  className="search-input"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                {search && (
+                  <button onClick={() => setSearch('')} className="clear-btn" aria-label="Clear search">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="list-body">
@@ -151,7 +93,7 @@ export default function LandingPage() {
                   <span className="loading-spinner" />
                   <p>Loading...</p>
                 </div>
-              ) : viewMode === 'practicals' ? (
+              ) : (
                 // PRACTICALS LIST
                 filteredPracticals.length === 0 ? (
                   <div className="empty-state">
@@ -173,7 +115,7 @@ export default function LandingPage() {
                           {hasImage ? (
                             <img src={imgSrc} alt="" className="item-img" />
                           ) : (
-                            <div className="item-placeholder" />
+                            <div className="item-placeholder" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))' }} />
                           )}
                         </div>
 
@@ -181,33 +123,6 @@ export default function LandingPage() {
                           <span className="item-title">{titleOnly}</span>
                         </span>
 
-                        <svg className="item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
-                    );
-                  })
-                )
-              ) : (
-                // QUESTIONS LIST
-                dbQuestions.length === 0 ? (
-                  <div className="empty-state">
-                    <p>No questions found in database.</p>
-                  </div>
-                ) : (
-                  dbQuestions.map((q) => {
-                    const targetHref = `/question/${q._id}`;
-                    return (
-                      <Link key={q._id} href={targetHref} className="list-item">
-                        <div className="item-thumb" style={{ background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--primary)' }}>Q{q.questionNumber || 'X'}</span>
-                        </div>
-                        <span className="item-body" style={{ display: 'flex', flexDirection: 'column' }}>
-                          <span className="item-title">{q.title || `[${q.source?.year}] ${q.source?.exam} Question`}</span>
-                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                            {q.source?.year} • {q.source?.exam} • {q.difficulty}
-                          </span>
-                        </span>
                         <svg className="item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7" />
                         </svg>
@@ -261,7 +176,7 @@ export default function LandingPage() {
           background: var(--bg);
           color: var(--text-hi);
           font-family: var(--font-sans);
-          padding-top: 7rem;
+          padding-top: 4rem;
           padding-bottom: 4rem;
           position: relative;
           overflow: hidden;
@@ -303,8 +218,7 @@ export default function LandingPage() {
 
         /* ── Header ── */
         .header {
-          text-align: center;
-          margin-bottom: 5rem;
+          margin-bottom: 2.5rem;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -341,11 +255,11 @@ export default function LandingPage() {
         }
 
         .title {
-          font-size: clamp(2.8rem, 6vw, 5rem);
-          font-weight: 800;
-          line-height: 1.05;
-          letter-spacing: -0.03em;
-          margin-bottom: 1.5rem;
+          font-size: clamp(1.4rem, 4vw, 2.5rem);
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          margin-bottom: 0.75rem;
           background: linear-gradient(160deg, #fff 40%, rgba(255,255,255,0.45));
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -353,11 +267,11 @@ export default function LandingPage() {
         }
 
         .subtitle {
-          font-size: 1rem;
+          font-size: 0.95rem;
           color: var(--text-md);
-          max-width: 38rem;
-          line-height: 1.8;
-          margin-bottom: 2.75rem;
+          max-width: 32rem;
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
         }
 
         /* ── Search ── */
@@ -448,46 +362,64 @@ export default function LandingPage() {
 
         .cat-nav {
           display: flex;
-          gap: 0.375rem;
+          gap: 0.5rem;
           flex-wrap: wrap;
-          overflow-x: auto;
           padding-bottom: 0.25rem;
         }
 
         .cat-btn {
-          background: transparent;
-          border: 1px solid var(--border);
-          border-radius: var(--radius-sm);
-          padding: 0.4rem 0.875rem;
-          font-size: 0.8125rem;
-          font-weight: 500;
-          font-family: var(--font-sans);
-          color: var(--text-md);
+          position: relative;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 0.75rem;
+          padding: 0.75rem 1.25rem;
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.5);
           cursor: pointer;
-          white-space: nowrap;
-          transition: all 0.18s ease;
+          white-space: normal;
+          word-break: break-word;
+          line-height: 1.4;
+          transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+          text-align: left;
+          min-height: 3.5rem;
+          display: flex;
+          align-items: center;
         }
 
         .cat-btn:hover {
-          background: var(--surface);
-          border-color: var(--border-md);
-          color: var(--text-hi);
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.12);
+          color: white;
+          transform: translateY(-1px);
         }
 
         .cat-btn.active {
-          background: var(--primary-bg);
-          border-color: rgba(124,110,242,0.4);
+          background: rgba(124, 110, 242, 0.1);
+          border-color: rgba(124, 110, 242, 0.4);
           color: #a89ef8;
+          box-shadow: 0 4px 12px rgba(124, 110, 242, 0.15);
+        }
+
+        .cat-btn.active::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 25%;
+          bottom: 25%;
+          width: 3px;
+          background: var(--primary);
+          border-radius: 0 4px 4px 0;
         }
 
         /* ── List panel ── */
         .list-panel {
           width: 100%;
           flex: 1;
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: var(--radius-lg);
-          overflow: hidden;
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          overflow: visible;
         }
 
         .list-header {
@@ -524,29 +456,36 @@ export default function LandingPage() {
         /* ── List items ── */
         .list-item {
           display: flex;
+          flex-direction: row;
           align-items: center;
-          gap: 1.25rem;
-          padding: 1.1rem 1.5rem;
-          border-bottom: 1px solid var(--border);
-          text-decoration: none;
-          transition: background 0.15s;
+          gap: 1.5rem;
+          padding: 1rem 1.5rem;
+          margin-bottom: 1rem;
+          border-radius: 1.25rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          text-decoration: none !important;
+          transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
           cursor: pointer;
         }
 
         .list-item:last-child { border-bottom: none; }
 
         .list-item:hover {
-          background: rgba(255,255,255,0.025);
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.12);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .item-thumb {
-          width: 3.5rem;
-          height: 2.5rem;
+          width: 5.5rem;
+          height: 4rem;
           flex-shrink: 0;
-          border-radius: var(--radius-sm);
+          border-radius: 0.75rem;
           overflow: hidden;
-          background: rgba(255,255,255,0.02);
-          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -561,7 +500,7 @@ export default function LandingPage() {
         .item-placeholder {
           width: 100%;
           height: 100%;
-          background: rgba(255, 255, 255, 0.5);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
         }
 
         .item-body {
@@ -572,28 +511,29 @@ export default function LandingPage() {
         }
 
         .item-title {
-          font-size: 0.9375rem;
-          font-weight: 600;
-          color: rgba(255,255,255,0.85);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          transition: color 0.15s;
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: rgba(255, 255, 255, 0.95);
+          text-decoration: none !important;
+          transition: color 0.2s;
+          display: inline-block;
         }
 
-        .list-item:hover .item-title { color: #fff; }
+        .list-item:hover .item-title { 
+          color: white; 
+        }
 
         .item-arrow {
           flex-shrink: 0;
-          width: 1.1rem;
-          height: 1.1rem;
-          color: var(--text-lo);
-          transition: transform 0.18s, color 0.18s;
+          width: 1.25rem;
+          height: 1.25rem;
+          color: rgba(255, 255, 255, 0.2);
+          transition: all 0.3s ease;
         }
 
         .list-item:hover .item-arrow {
           color: var(--primary);
-          transform: translateX(3px);
+          transform: translateX(5px);
         }
 
         /* ── Empty / loading states ── */
@@ -702,7 +642,7 @@ export default function LandingPage() {
           }
 
           .sidebar {
-            width: 15rem;
+            width: 20rem;
             position: sticky;
             top: 7rem;
           }
@@ -717,6 +657,7 @@ export default function LandingPage() {
           .cat-btn {
             width: 100%;
             text-align: left;
+            padding: 0.75rem 1.25rem;
           }
         }
 

@@ -11,11 +11,15 @@ interface SubQuestionProps {
     marks?: number;
     answer?: string;
   };
+  hideIndividualButtons?: boolean;
+  forceShowAnswer?: boolean;
 }
 
-const SubQuestionItem = ({ sq }: SubQuestionProps) => {
+const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQuestionProps) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [userAnswer, setUserAnswer] = useState('');
+
+  const isVisible = forceShowAnswer || showAnswer;
 
   return (
     <div className="sq-card" style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '0.5rem', borderLeft: '3px solid rgba(255,255,255,0.1)' }}>
@@ -49,33 +53,35 @@ const SubQuestionItem = ({ sq }: SubQuestionProps) => {
         />
       </div>
 
-      <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <button 
-          onClick={() => setShowAnswer(!showAnswer)}
-          style={{
-            background: showAnswer ? 'rgba(255,255,255,0.1)' : 'var(--primary)',
-            color: showAnswer ? 'white' : 'white',
-            border: 'none',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            fontSize: '0.8rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-            opacity: showAnswer ? 0.7 : 1
-          }}
-        >
-          {showAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
-        </button>
-        
-        {sq.marks && sq.marks > 0 && (
-          <div style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 'bold' }}>
-            [{sq.marks} Marks]
-          </div>
-        )}
-      </div>
+      {!hideIndividualButtons && (
+        <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button 
+            onClick={() => setShowAnswer(!showAnswer)}
+            style={{
+              background: showAnswer ? 'rgba(255,255,255,0.1)' : 'var(--primary)',
+              color: 'white',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              fontSize: '0.8rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              opacity: showAnswer ? 0.7 : 1
+            }}
+          >
+            {showAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
+          </button>
+          
+          {sq.marks && sq.marks > 0 && (
+            <div style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 'bold' }}>
+              [{sq.marks} Marks]
+            </div>
+          )}
+        </div>
+      )}
       
-      {showAnswer && sq.answer && (
+      {isVisible && sq.answer && (
         <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(34, 197, 94, 0.08)', borderLeft: '3px solid #4ade80', borderRadius: '0.375rem', animation: 'fadeIn 0.3s ease-out' }}>
           <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#4ade80', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.4rem' }}>Official Marking Scheme / Answer</span>
           <div style={{ color: '#f8fafc', whiteSpace: 'pre-wrap', fontSize: '0.95rem', lineHeight: '1.6' }}>{sq.answer}</div>
@@ -88,11 +94,15 @@ const SubQuestionItem = ({ sq }: SubQuestionProps) => {
 interface QuestionDisplayProps {
   q: any;
   idx?: number;
+  hideIndividualButtons?: boolean;
+  forceShowAnswer?: boolean;
 }
 
-export default function QuestionDisplay({ q, idx }: QuestionDisplayProps) {
+export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceShowAnswer }: QuestionDisplayProps) {
   const [showTopAnswer, setShowTopAnswer] = useState(false);
   const [topUserAnswer, setTopUserAnswer] = useState('');
+
+  const isVisible = forceShowAnswer || showTopAnswer;
 
   return (
     <div className="question-card" style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '0.75rem', marginBottom: '1.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -123,7 +133,7 @@ export default function QuestionDisplay({ q, idx }: QuestionDisplayProps) {
       {q.subQuestions && q.subQuestions.length > 0 ? (
         <div className="q-subparts" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {q.subQuestions.map((sq: any, i: number) => (
-            <SubQuestionItem key={i} sq={sq} />
+            <SubQuestionItem key={i} sq={sq} hideIndividualButtons={hideIndividualButtons} forceShowAnswer={forceShowAnswer} />
           ))}
         </div>
       ) : (
@@ -147,32 +157,34 @@ export default function QuestionDisplay({ q, idx }: QuestionDisplayProps) {
               fontFamily: 'inherit'
             }}
           />
-          <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <button 
-              onClick={() => setShowTopAnswer(!showTopAnswer)}
-              style={{
-                background: showTopAnswer ? 'rgba(255,255,255,0.1)' : 'var(--primary)',
-                color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '0.375rem',
-                fontSize: '0.8rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
-              {showTopAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
-            </button>
-            
-            {q.marks && q.marks > 0 && (
-              <div style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 'bold' }}>
-                [{q.marks} Marks]
-              </div>
-            )}
-          </div>
+          {!hideIndividualButtons && (
+            <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <button 
+                onClick={() => setShowTopAnswer(!showTopAnswer)}
+                style={{
+                  background: showTopAnswer ? 'rgba(255,255,255,0.1)' : 'var(--primary)',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.375rem',
+                  fontSize: '0.8rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {showTopAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
+              </button>
+              
+              {q.marks && q.marks > 0 && (
+                <div style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 'bold' }}>
+                  [{q.marks} Marks]
+                </div>
+              )}
+            </div>
+          )}
           
-          {showTopAnswer && q.answer && (
+          {isVisible && q.answer && (
             <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(34, 197, 94, 0.08)', borderLeft: '3px solid #4ade80', borderRadius: '0.375rem' }}>
               <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#4ade80', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.4rem' }}>Official Answer</span>
               <div style={{ color: '#f8fafc', whiteSpace: 'pre-wrap', fontSize: '0.95rem', lineHeight: '1.6' }}>{q.answer}</div>

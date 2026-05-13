@@ -108,14 +108,15 @@ body {
 }
 
 .btn-primary {
-  background: #fff;
-  color: #000;
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
 }
 
 .btn-primary:hover {
-  background: #e2e8f0;
+  background: #4f46e5;
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.23);
 }
 
 .btn-outline {
