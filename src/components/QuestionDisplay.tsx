@@ -1,6 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import { preprocessMarkdown, fixImageUrls } from '@/lib/markdownUtils';
 
 interface SubQuestionProps {
   sq: {
@@ -24,11 +30,36 @@ const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQues
   return (
     <div className="sq-card" style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '0.5rem', borderLeft: '3px solid rgba(255,255,255,0.1)' }}>
       {sq.imageUrl && (
-        <img src={sq.imageUrl} alt="subpart image" style={{ maxWidth: '100%', marginBottom: '1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} />
+        <img 
+          src={fixImageUrls(sq.imageUrl)} 
+          alt="subpart image" 
+          style={{ maxWidth: '100%', marginBottom: '1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} 
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Image+Not+Found';
+          }}
+        />
       )}
       <div style={{ display: 'flex', gap: '1rem' }}>
         <span style={{ fontWeight: 'bold', color: 'white', minWidth: '35px' }}>{sq.part}</span>
-        <div style={{ color: 'var(--text-muted)', whiteSpace: 'pre-wrap', flex: 1, lineHeight: '1.5' }}>{sq.text}</div>
+        <div className="q-content" style={{ color: 'var(--text-muted)', flex: 1, lineHeight: '1.6' }}>
+          <ReactMarkdown 
+            remarkPlugins={[remarkGfm, remarkMath]} 
+            rehypePlugins={[rehypeKatex, rehypeRaw]}
+            components={{
+              img: ({node, ...props}) => (
+                <img 
+                  {...props} 
+                  style={{maxWidth: '100%', borderRadius: '0.5rem'}}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://placehold.co/400x300?text=Image+Not+Found';
+                  }}
+                />
+              )
+            }}
+          >
+            {preprocessMarkdown(sq.text)}
+          </ReactMarkdown>
+        </div>
       </div>
       
       {/* User Input Area */}
@@ -84,7 +115,14 @@ const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQues
       {isVisible && sq.answer && (
         <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(34, 197, 94, 0.08)', borderLeft: '3px solid #4ade80', borderRadius: '0.375rem', animation: 'fadeIn 0.3s ease-out' }}>
           <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#4ade80', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.4rem' }}>Official Marking Scheme / Answer</span>
-          <div style={{ color: '#f8fafc', whiteSpace: 'pre-wrap', fontSize: '0.95rem', lineHeight: '1.6' }}>{sq.answer}</div>
+          <div className="q-content" style={{ color: '#f8fafc', fontSize: '0.95rem', lineHeight: '1.6' }}>
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm, remarkMath]} 
+              rehypePlugins={[rehypeKatex, rehypeRaw]}
+            >
+              {preprocessMarkdown(sq.answer)}
+            </ReactMarkdown>
+          </div>
         </div>
       )}
     </div>
@@ -119,15 +157,27 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
         <div className="q-figures" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', marginBottom: '1.5rem', paddingBottom: '0.5rem' }}>
           {q.figures.map((fig: any, i: number) => (
             <div key={i} style={{ minWidth: '250px', flex: '0 0 auto' }}>
-              <img src={fig.imageUrl} alt={fig.label || `Figure ${i+1}`} style={{ width: '100%', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} />
+          <img 
+            src={fixImageUrls(fig.imageUrl)} 
+            alt={fig.label || `Figure ${i+1}`} 
+            style={{ width: '100%', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} 
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Figure+Not+Found';
+            }}
+          />
               {fig.label && <p style={{ fontSize: '0.85rem', textAlign: 'center', marginTop: '0.5rem', color: 'var(--text-muted)' }}>{fig.label}</p>}
             </div>
           ))}
         </div>
       )}
 
-      <div className="q-text" style={{ color: 'var(--text-muted)', marginBottom: '1rem', whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
-        {q.mainQuestionText}
+      <div className="q-content q-text" style={{ color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: '1.6' }}>
+        <ReactMarkdown 
+          remarkPlugins={[remarkGfm, remarkMath]} 
+          rehypePlugins={[rehypeKatex, rehypeRaw]}
+        >
+          {preprocessMarkdown(q.mainQuestionText)}
+        </ReactMarkdown>
       </div>
 
       {q.subQuestions && q.subQuestions.length > 0 ? (
@@ -187,7 +237,14 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
           {isVisible && q.answer && (
             <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(34, 197, 94, 0.08)', borderLeft: '3px solid #4ade80', borderRadius: '0.375rem' }}>
               <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#4ade80', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.4rem' }}>Official Answer</span>
-              <div style={{ color: '#f8fafc', whiteSpace: 'pre-wrap', fontSize: '0.95rem', lineHeight: '1.6' }}>{q.answer}</div>
+            <div className="q-content" style={{ color: '#f8fafc', fontSize: '0.95rem', lineHeight: '1.6' }}>
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm, remarkMath]} 
+                rehypePlugins={[rehypeKatex, rehypeRaw]}
+              >
+                {preprocessMarkdown(q.answer)}
+              </ReactMarkdown>
+            </div>
             </div>
           )}
         </div>

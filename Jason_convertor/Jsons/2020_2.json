@@ -1,0 +1,118 @@
+{
+    "year": 2020,
+    "questionNumber": "2",
+    "mainQuestionText": "You are asked to determine the atmospheric pressure using a dry air column trapped in a quill tube of length L. The figure shown is incomplete and not drawn to scale.",
+    "subparts": [
+        "(a)",
+        "(b)",
+        "(c)",
+        "(d)(i)",
+        "(d)(ii)",
+        "(d)(iii)",
+        "(d)(iv)",
+        "(d)(v)",
+        "(d)(vi)",
+        "(e)(i)",
+        "(e)(ii)",
+        "(f)"
+    ],
+    "subQuestions": [
+        {
+            "id": "a",
+            "part": "(a)",
+            "text": "Complete the experimental set up by drawing appropriate items and name them.",
+            "marks": 2,
+            "answer": "Metre ruler (or two rulers) and a (clamp) stand.\n[Drawing (and naming) the ruler -01 mark; Drawing (and naming) the stand -01 mark]\nThe ruler (or scale) must be along the quill tube and must touch the tube, (with zero mark of the ruler at the lower end of the tube).\n[Award the mark for the stand even if it holds a vertical ruler, with/without supporting the tube]",
+            "imageUrl": "/Extracted_Diagrams/2020_2_a.jpg"
+        },
+        {
+            "id": "b",
+            "part": "(b)",
+            "text": "What are the approximate values of length and internal diameter of the quill tube used in this experiment?",
+            "marks": 2,
+            "answer": "Length: 80 - 100 cm\nInternal diameter: 2 - 3 mm"
+        },
+        {
+            "id": "c",
+            "part": "(c)",
+            "text": "What should be the approximate length of the mercury column used in this experiment? Underline the correct answer.\n(1) 2 cm\t(2) 10 cm\t(3) 30 cm",
+            "marks": 1,
+            "answer": "[Award 01 mark for 30 cm or 10 cm]"
+        },
+        {
+            "id": "d_i",
+            "part": "(d)(i)",
+            "text": "Write down an expression for the pressure (in cm Hg) of the trapped air column in terms of H, h, x and L.",
+            "marks": 1,
+            "answer": "Pressure = H + (xh/L)"
+        },
+        {
+            "id": "d_ii",
+            "part": "(d)(ii)",
+            "text": "Applying the Boyle's law to the trapped air column, write down an expression to determine H in terms of h, x, L, A and a constant (k).",
+            "marks": 1,
+            "answer": "(H + (xh/L))Al = k\n[Award the mark even if wrong expression for pressure in (d)(i) is substituted to the Boyle's law]"
+        },
+        {
+            "id": "d_iii",
+            "part": "(d)(iii)",
+            "text": "Rearrange the expression obtained in (d) (ii) above to determine H by plotting a straight line graph.",
+            "marks": 2,
+            "answer": "1/L = (Ax/k)h + (AH/k)\n[Award 01 mark for rearrangement of expression in (d)(ii) and 01 for correct expression]"
+        },
+        {
+            "id": "d_iv",
+            "part": "(d)(iv)",
+            "text": "In the graph mentioned in (d) (iii) above identify the independent and dependent variables.",
+            "marks": 2,
+            "answer": "Independent variable: h\nDependent variable: 1/L\n[No marks for variables of a wrong expression]"
+        },
+        {
+            "id": "d_v",
+            "part": "(d)(v)",
+            "text": "Label the axes and draw a rough sketch of the graph expected by you. Label the line drawn as P.",
+            "marks": 3,
+            "answer": "Correct labelling of both axes\nStraight line with a positive gradient and a positive intercept\n[01 mark for the positive gradient; 01 mark for the positive intercept]",
+            "imageUrl": "/Extracted_Diagrams/2020_2_d_v.jpg"
+        },
+        {
+            "id": "d_vi",
+            "part": "(d)(vi)",
+            "text": "Write down an expression for the atmospheric pressure H using the informations extracted from the graph and relevant parameters.",
+            "marks": 2,
+            "answer": "Gradient = (Ax/k)\tIntercept = (AH/k)\nAtmospheric pressure H = (Intercept/Gradient) * (x/L)\n[Award 01 mark for identifying gradient and intercept]"
+        },
+        {
+            "id": "e_i",
+            "part": "(e)(i)",
+            "text": "What is the best experimental procedure to vary h values? Underline the correct answer.\n(i) From a lower value to a higher value / from a higher value to a lower value.",
+            "marks": 1,
+            "answer": "From a lower value to a higher value"
+        },
+        {
+            "id": "e_ii",
+            "part": "(e)(ii)",
+            "text": "Give the reason",
+            "marks": 1,
+            "answer": "To keep the mercury column inside the quill tube for all readings.\nOR To avoid the mercury leaving the tube.\nOR To change the pressure of air column from lower values to higher values\nOR To change the length of air column from higher values to lower values"
+        },
+        {
+            "id": "f",
+            "part": "(f)",
+            "text": "If the air trapped in the tube is not dry and contained saturated water vapour throughout the experiment, sketch the expected line on the above graph and label it as Q.",
+            "marks": 2,
+            "answer": "Parallel line with lower intercept\n[01 mark for the parallel line; 01 mark for the lower intercept]",
+            "imageUrl": "/Extracted_Diagrams/2020_2_f.jpg"
+        }
+    ],
+    "tags": [],
+    "title": "",
+    "type": "past",
+    "source": {
+        "type": "past_paper",
+        "exam": "GCE Advanced Level",
+        "subject": "Physics",
+        "year": 2020,
+        "variant": "English"
+    }
+}

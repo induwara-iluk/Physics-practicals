@@ -1,0 +1,450 @@
+{
+    "questionText": "Answer all four questions on this paper itself.\n(g = 10 m s-2)",
+    "subparts": [
+        "1. A mass (m) is suspended by a helical spring with a pointer attached at its lower end is shown in the figure. A student is asked to verify the relationship between the mass (m) with its periodic time (7) of vertical oscillations and to determine the spring constant by using a graphical method.",
+        "(a)",
+        "(b)",
+        "(c)",
+        "(d)",
+        "2. You are asked to determine the relative humidity of air in the laboratory by measuring the dew point. You are provided a copper calorimeter with polished outer surface, a thermometer, water, a sufficient amount of small pieces of ice and a transparent glass plate. An incomplete experimental set up that can be arranged for this purpose is shown in figure (1).",
+        "(a)",
+        "(b)",
+        "(c)",
+        "(d)",
+        "(e)",
+        "(f)",
+        "(g)",
+        "(h)",
+        "3. You are asked to determine the refractive index (n) of a transparent liquid using the apparent displacement of the image of an object. You are provided with a tall cylinder, sufficient amount of liquid, a travelling microscope, a small pin (O), fine plastic pieces which can float on the liquid and a large syringe.",
+        "(a)",
+        "(b)",
+        "(c)",
+        "(d)",
+        "(e)",
+        "(f)",
+        "4. Figure (1) shows a part of an experimental set up to determine the resistivity (P) of material of a given wire with the aid of a metre bridge. The resistance value of the resistance box is R and the resistance of the given wire is S. The length of the metre bridge wire AB is 100 cm.",
+        "(a)",
+        "(b)",
+        "(c)",
+        "(d)",
+        "(e)",
+        "(f)",
+        "(g)"
+    ],
+    "subQuestions": [
+        {
+            "id": "1_main",
+            "questionText": "A mass (m) is suspended by a helical spring with a pointer attached at its lower end is shown in the figure. A student is asked to verify the relationship between the mass (m) with its periodic time (7) of vertical oscillations and to determine the spring constant by using a graphical method.",
+            "answerText": null,
+            "marks": null,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_1_main.jpg"
+        },
+        {
+            "id": "1_a_i",
+            "questionText": "Write down an an expression for periodic time (7) of vertical oscillations of a mass (m) suspended by a massless spring of spring constant (k).",
+            "answerText": "\u03a4 = 2\u03c0\u221a(m/k)\n........(02)",
+            "marks": 2
+        },
+        {
+            "id": "1_a_ii",
+            "questionText": "Rearrange the expression written in (a) (i) above in order to verify the relationship between mass (m) and periodic time (7) by plotting a suitable straight line graph.",
+            "answerText": "T\u00b2 = (4\u03c0\u00b2/k) m\n................(01)",
+            "marks": 1
+        },
+        {
+            "id": "1_b_i",
+            "questionText": "If the student is provided with a set of 50g weights, what is the other essential measuring instrument that he needs to do this experiment?",
+            "answerText": "(electronic/digital) Stopwatch / Stop clock\n.(02)",
+            "marks": 2
+        },
+        {
+            "id": "1_b_ii",
+            "questionText": "It is advisable to use a locating pointer in this experiment. Draw an arrow head at the appropriate position of this pointer in the above figure.",
+            "answerText": "(For drawing the locating pointer in correct position)\n.............(01)\n[The arrow head should be reasonably close to the pointer at the same side, same\nlevel, arrow head should be clearly drawn pointing towards the pointer]\n[No marks for drawing the arrow at any other position]",
+            "marks": 1
+        },
+        {
+            "id": "1_c_i",
+            "questionText": "What is the purpose of using this locating pointer?",
+            "answerText": "To accurately determine the beginning and end positions of oscillations OR\nTo determine the equilibrium position of oscillations accurately OR\nTo determine the number of oscillations accurately OR\nTo minimize the error in time measurement/to measure the time accurately\n.......(01)",
+            "marks": 1
+        },
+        {
+            "id": "1_c_ii",
+            "questionText": "Why does the accuracy in determination of the spring constant (k) depends mainly on the accuracy in determination of the periodic time (7) of oscillation of the mass?",
+            "answerText": "Small error/ uncertainty in (the measurement) T would result a large error in T\u00b2 OR\nT\u00b2 is used for plotting the graph\n...(01)",
+            "marks": 1
+        },
+        {
+            "id": "1_c_iii",
+            "questionText": "What is the characteristic property of the instrument mentioned in (b) (i) above which affect the fractional error of time measurement? (Let the value of this property be x.)",
+            "answerText": "The least count of the stopwatch\n............(02)",
+            "marks": 2
+        },
+        {
+            "id": "1_c_iv",
+            "questionText": "Let the approximate time per oscillation be t. Write down an expression for the minimum number of oscillations (n) that should be taken in terms of x and t in order to obtain a percentage error of 1% in periodic time determination.",
+            "answerText": "1/100 = x/nt\nn = 100x/t\n.................(01)",
+            "marks": 1
+        },
+        {
+            "id": "1_d_main",
+            "questionText": "The student obtained the following graph in order to calculate the spring constant (k) of the helical spring.",
+            "answerText": null,
+            "marks": null,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_1_d_main.jpg"
+        },
+        {
+            "id": "1_d_i_1",
+            "questionText": "Calculate the spring constant (k) of the helical spring in SI units using the above graph. (Take \u03c0\u00b2 = 10)",
+            "answerText": "Gradient (m) = 4\u03c0\u00b2/k\n.........(01)\n(Identify the gradient as 4\u03c0\u00b2/k)",
+            "marks": 1
+        },
+        {
+            "id": "1_d_i_2",
+            "questionText": null,
+            "answerText": "Selecting points (80, 30) and (280, 80)\n(No marks for selecting any other points)\n.........(01)",
+            "marks": 1
+        },
+        {
+            "id": "1_d_i_3",
+            "questionText": null,
+            "answerText": "Gradient = (80-30)\u00d710-2 / (280-80)\u00d710-3 (for substitution)\n.........(01)",
+            "marks": 1
+        },
+        {
+            "id": "1_d_i_4",
+            "questionText": null,
+            "answerText": "4\u03c0\u00b2/k = 50 \u00d710-2 / 200\u00d710-3\n.........(01)",
+            "marks": 1
+        },
+        {
+            "id": "1_d_i_5",
+            "questionText": null,
+            "answerText": "k = 4\u00d710\u00d7200\u00d710-3 / 50 \u00d710-2\nk = 16 N m\u207b\u00b9 OR 16 kg s\u207b\u00b2\n(or 160 N s\u207b\u00b2 or 160 kg m s\u207b\u00b9)\n(01 mark for the correct value only)\n.(02)",
+            "marks": 2
+        },
+        {
+            "id": "1_d_ii",
+            "questionText": "Give the reason for obtaining a non zero intercept. (Mentioning that there are errors in data points is not an acceptable answer.)",
+            "answerText": "Mass of the spring is not negligible OR due to mass of the spring\n...(02)",
+            "marks": 2
+        },
+        {
+            "id": "2_main",
+            "questionText": "You are asked to determine the relative humidity of air in the laboratory by measuring the dew point. You are provided a copper calorimeter with polished outer surface, a thermometer, water, a sufficient amount of small pieces of ice and a transparent glass plate. An incomplete experimental set up that can be arranged for this purpose is shown in figure (1).",
+            "answerText": null,
+            "marks": null,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_2_main.jpg"
+        },
+        {
+            "id": "2_a",
+            "questionText": "In order to perform this experiment you have to pour water into the calorimeter. Out of the three water levels A, B and C shown in figure (1) select the most appropriate level.",
+            "answerText": "Appropriate level: B\n.................(01)",
+            "marks": 1
+        },
+        {
+            "id": "2_b_i",
+            "questionText": "Three thermometers P, Q and R having temperature scale ranges -10 to 50 \u00b0C, -10 to 100 \u00b0C and -10 to 200 \u00b0C respectively are available in the laboratory. Select the most appropriate thermometer for this experiment.",
+            "answerText": "Appropriate thermometer : P OR thermometer with the -10 to 50 \u00b0C range .......(02)",
+            "marks": 2
+        },
+        {
+            "id": "2_b_ii",
+            "questionText": "Give the reason for your selection:",
+            "answerText": "The least count of P is smallest OR least count of P is 0.2 \u00b0C OR temperatures can be\nmeasured more accurately OR fractional/percentage error of temperature measurement is\nsmallest/lowest/minimum OR sensitivity of the thermometer is high\n...........(01)",
+            "marks": 1
+        },
+        {
+            "id": "2_c",
+            "questionText": "What is the other important item necessary to perform this experiment which is not given?",
+            "answerText": "Stirrer OR stirrer with a mesh\n.(01)",
+            "marks": 1
+        },
+        {
+            "id": "2_d",
+            "questionText": "In order to determine the dew point you have to measure two temperatures. Write down the experimental steps that you would follow to measure the first temperature accurately with the observation that you notice.",
+            "answerText": "Experimental steps:\nAdd one piece of ice at a time into water\n.(01)\nStir well until it is completely dissolved\n.(01)\nObservation: Observe the beginning of disappearing of shining of the calorimeter\nsurface OR observe beginning of deposition of dew on the calorimeter surface\n.....(01)\n[No marks for appearance of water droplets]",
+            "marks": 3
+        },
+        {
+            "id": "2_e",
+            "questionText": "In order to measure the second temperature accurately write down the experimental steps that you would follow with the observation that you notice.",
+            "answerText": "Experimental steps:\nStop adding ice\n...(01)\nContinue stirring\n....(01)\nObservation: Observe the shine of the calorimeter surface begins to reappear\nOR observe the beginning of disappearance of dew on the calorimeter surface\n...........(01)",
+            "marks": 3
+        },
+        {
+            "id": "2_f",
+            "questionText": "Write down a disadvantage of using water at 0\u00b0C instead of ice pieces to perform this experiment.",
+            "answerText": "May need a large volume of water OR calorimeter will fill up/water will spill\nbefore reaching the dew point OR temperature drop of water in the calorimeter\nmay be insufficient OR heat lost by water in the calorimeter may be insufficient\n...................(01)",
+            "marks": 1
+        },
+        {
+            "id": "2_g_i",
+            "questionText": "Give two errors that can occur if the transparent glass plate is not used in this experiment. (Assume that a face mask or/and a face shield is/are not used)",
+            "answerText": "(1) Temperature near the calorimeter will be changed.\n(2) The relative humidity near the calorimeter will be changed.\n(3) Water vapour in exhale air striking the calorimeter surface will be condensed\n[Any two above \u2013 01 mark each]\n............(02)",
+            "marks": 2
+        },
+        {
+            "id": "2_g_ii_1",
+            "questionText": "If three glass plates L, M and N with dimensions of 5 cm x 5 cm, 20 cm x 20 cm, and 80 cm x 80 cm respectively are available, what would be the best glass plate to be used in this experiment? Give reasons for not selecting the other two plates.",
+            "answerText": "The best plate: M\n.(02)",
+            "marks": 2
+        },
+        {
+            "id": "2_g_ii_2",
+            "questionText": "Reasons for not selecting other two plates:",
+            "answerText": "(1) (For not selecting L): It does not have sufficient size/area OR it does not prevent exhale\nair reaching the calorimeter surface OR it does not prevent deposition of water vapour in\nexhale air on the calorimeter surface\n...........(01)",
+            "marks": 1
+        },
+        {
+            "id": "2_g_ii_3",
+            "questionText": null,
+            "answerText": "(2) (For not selecting N): It obstructs stirring OR difficult to perform stirring with it OR\ndifficult to reach the calorimeter with it (to perform stirring)\n...............(01)",
+            "marks": 1
+        },
+        {
+            "id": "2_h",
+            "questionText": "In this experiment the average value of the dew point and laboratory temperature are found to be 26.0 \u00b0C and 30.0 \u00b0C respectively. Determine the relative humidity of air in the laboratory, using the graphs given in figure (2). In the graph X-axis gives the laboratory temperature and Y-axis gives the dew point. In the figure straight lines represent different relative humidity values of 100%, 90%, 80% etc.",
+            "answerText": "Relative humidity: 80%\n.(02)",
+            "marks": 2,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_2_h.jpg"
+        },
+        {
+            "id": "3_main",
+            "questionText": "You are asked to determine the refractive index (n) of a transparent liquid using the apparent displacement of the image of an object. You are provided with a tall cylinder, sufficient amount of liquid, a travelling microscope, a small pin (O), fine plastic pieces which can float on the liquid and a large syringe.",
+            "answerText": null,
+            "marks": null
+        },
+        {
+            "id": "3_a",
+            "questionText": "Write down an expression for the apparent displacement (d) produced by a transparent block made of material of refractive index (n) and thickness (h) placed in air when an object (O) is placed at the opposite side of the block as shown in the figure (1).",
+            "answerText": "d=h(1-1/n)\n(02)",
+            "marks": 2,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_3_a.jpg"
+        },
+        {
+            "id": "3_b_main",
+            "questionText": "As in figure (2) the small pin O is placed at the bottom of the empty cylinder. The travelling microscope is focused from above to view a clear image of O and the reading is taken (say x). Then the liquid is poured up to a certain height (h).",
+            "answerText": null,
+            "marks": null,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_3_b_main.jpg"
+        },
+        {
+            "id": "3_b_i",
+            "questionText": "What you should do to the travelling microscope to see a clear image of the pin again? Let the microscope reading be (y) in this situation.",
+            "answerText": "Move the travelling microscope upward (until a clear image of O is seen)\n(02)",
+            "marks": 2
+        },
+        {
+            "id": "3_b_ii",
+            "questionText": "Write down the experimental steps that you follow to measure the height (h) of the liquid column. (Let the reading be z.)",
+            "answerText": "Float few fine plastic pieces/powder on liquid\n.(01)\nand move the microscope (further) upward until a clear image of plastic pieces/powder\nare seen. (Take reading z)\n.(01)\n(No marks for stating that the travelling microscope has to be focused)",
+            "marks": 2
+        },
+        {
+            "id": "3_b_iii",
+            "questionText": "Write down expressions for height (h) of the liquid column and the apparent displacement (d) of the image using the readings x, y and z.",
+            "answerText": "h = z - x\n.(01)\nd = y - x\n.(01)\n[Award full marks if h = x - z and d= x \u2212 y are written; But only 01 mark if answers are mixed]",
+            "marks": 2
+        },
+        {
+            "id": "3_c_i",
+            "questionText": "If the expression you have written in part (a) above is used to determine the refractive index of the liquid (n) using a graphical method what is the variable that you are going to change in it?",
+            "answerText": "h (OR The height of the liquid)\n.(01)",
+            "marks": 1
+        },
+        {
+            "id": "3_c_ii",
+            "questionText": "What will be the dependent variable of the straight line graph that you going to draw?",
+            "answerText": "d (OR Apparent displacement)\n.(01)",
+            "marks": 1
+        },
+        {
+            "id": "3_c_iii",
+            "questionText": "Clearly labelling the axes sketch the graph that you would expect.",
+            "answerText": "[02 mark for labelling d and h properly and straight line through (0, 0)]\n(02)\n{Only 01 mark for labelling d and h properly and a line with positive gradient with an\nintercept. No marks for a line without labelling axes}",
+            "marks": 2,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_3_c_iii.jpg"
+        },
+        {
+            "id": "3_d_1",
+            "questionText": "Obtain an expression for the refractive index (n) in terms of the gradient (m) of the graph.",
+            "answerText": "Gradient m=(1-1/\u03b7l)\n.(01)\n= 1-m",
+            "marks": 1
+        },
+        {
+            "id": "3_d_2",
+            "questionText": null,
+            "answerText": "\u03b7l = 1/(1-m)\n.(01)",
+            "marks": 1
+        },
+        {
+            "id": "3_e_1",
+            "questionText": "If the gradient m = 0.20, calculate the value of refractive index (n) of the liquid.",
+            "answerText": "\u03b7l = 1/(1-0.2) (OR 1/0.8)\n.(01)",
+            "marks": 1
+        },
+        {
+            "id": "3_e_2",
+            "questionText": null,
+            "answerText": "nl = 1.25\n.(01)",
+            "marks": 1
+        },
+        {
+            "id": "3_f_1",
+            "questionText": "When the height of the liquid column is 5.0 cm, water is slowly poured so that the liquid floats on water. The total apparent displacement of the image of the pin is 1.5 cm and the refractive index of water is 4/3. Calculate the height of the water column in the cylinder.",
+            "answerText": "d = dl + dw\n.(01)\n[For identifying total displacement is equal to the sum of two individual displacemen]",
+            "marks": 1
+        },
+        {
+            "id": "3_f_2",
+            "questionText": null,
+            "answerText": "dl = 5 (1 - 4/5) = 5 \u00d7 1/5 = 1 cm\n.(01)",
+            "marks": 1
+        },
+        {
+            "id": "3_f_3",
+            "questionText": null,
+            "answerText": "dw = 1.5-1 (for subtraction)\ndw = 0.5\n0.5 = hw (1-3/4)\nhw = 2.0 cm\n.(02)",
+            "marks": 2
+        },
+        {
+            "id": "4_main",
+            "questionText": "Figure (1) shows a part of an experimental set up to determine the resistivity (P) of material of a given wire with the aid of a metre bridge. The resistance value of the resistance box is R and the resistance of the given wire is S. The length of the metre bridge wire AB is 100 cm.",
+            "answerText": null,
+            "marks": null,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_4_main.jpg"
+        },
+        {
+            "id": "4_a_main",
+            "questionText": "A centre-zero galvanometer has to be connected between points C and D. To protect the centre-zero galvanometer the circuit in figure (2) can be used.",
+            "answerText": null,
+            "marks": null,
+            "imageUrl": "/Extracted_Diagrams/01Physics-E_1681709770971_4_a_main.jpg"
+        },
+        {
+            "id": "4_a_i",
+            "questionText": "Name the type of key K\u2082:",
+            "answerText": "Plug key\n.................(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_a_ii",
+            "questionText": "Select the suitable value for the resistance X from resistances 1\u03a9, 10\u03a9, 100\u03a9, and 1000\u03a9.",
+            "answerText": "1000 \u03a9\n.................(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_b_1",
+            "questionText": "Before taking measurements how do you check whether the circuit is connected properly?",
+            "answerText": "Open K\u2082 (and close key K\u2081)\n(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_b_2",
+            "questionText": null,
+            "answerText": "Touch the sliding key with both ends of the wire and check whether the deflections of the\ngalvanometer are in opposite directions\n........(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_c",
+            "questionText": "When the resistance value of resistance box is R, the balance length of the metre bridge wire is l (in cm). Write down an expression for R/S in terms of l. Neglect the end corrections of the metre bridge wire.",
+            "answerText": "R/S = l / 100-l\n.................(02)",
+            "marks": 2
+        },
+        {
+            "id": "4_d_main",
+            "questionText": "For R = 9\u03a9. 26\u03a9 and 56\u03a9 the balance lengths are 27.0cm, 52.0 cm and 70.0cm respectively at 30\u00b0C.",
+            "answerText": null,
+            "marks": null
+        },
+        {
+            "id": "4_d_i",
+            "questionText": "What is the most appropriate value of resistance R that must be used in order to determine the value of S accurately? Give the reason.",
+            "answerText": "Value: 26 \u03a9\n...(01)\nReason: Then balance point is in the middle of the wire which minimizes the\nfractional/percentage/end error of length measurements.\n...(01)",
+            "marks": 2
+        },
+        {
+            "id": "4_d_ii_1",
+            "questionText": "Calculate the most accurate value of S using the relevant balance length and R.",
+            "answerText": "26 / S = 52 / 100-52\n........(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_d_ii_2",
+            "questionText": null,
+            "answerText": "S = 24 \u03a9\n....(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_e_1",
+            "questionText": "The values of diameter measured in four different places in the given wire are 0.39 mm, 0.40 mm, 0.40 mm and 0.41 mm, and the length of the wire is 48.0 cm. Calculate the resistivity of the material of the wire. (Take \u03c0= 3.)",
+            "answerText": "Average of d = (0.39 + 0.40 +0.40 + 0.41)/4 = 0.40 mm\n........(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_e_2",
+            "questionText": null,
+            "answerText": "S = \u03c1L/A OR \u03c1 = SA/L OR \u03c1 = S\u03c0(d/2)\u00b2/L\n....(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_e_3",
+            "questionText": null,
+            "answerText": "\u03c1 = 24\u00d73\u00d7(0.4\u00d710\u207b\u00b3/2)\u00b2 / 48\u00d710\u207b\u00b2 (for substitution)\n........(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_e_4",
+            "questionText": null,
+            "answerText": "\u03c1 = 6.0 \u00d7 10\u207b\u2076 \u03a9 m [(6.0 \u2013 6.1) \u00d7 10\u207b\u2076 \u03a9 m]\n....(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_f_1",
+            "questionText": "When the above wire is kept at constant temperature of 100 \u00b0C in an oil bath, for R = 20 \u03a9 in the resistance box the balance length is 40.0 cm. Calculate the temperature coefficient of resistance of the material of the wire.",
+            "answerText": "S_\u03b8 = S_\u2080(1 + \u03b1\u03b8)\n...(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_f_2",
+            "questionText": null,
+            "answerText": "At the room temperature 24 = S_\u2080(1 + \u03b1 \u00d7 30)\n...(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_f_3",
+            "questionText": null,
+            "answerText": "At 100 \u00b0C, S = 20.0\u00d760.0 / 40.0 = 30 \u03a9\n....(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_f_4",
+            "questionText": null,
+            "answerText": "30 = S_\u2080(1 + \u03b1 \u00d7 100)\n... (01)",
+            "marks": 1
+        },
+        {
+            "id": "4_f_5",
+            "questionText": null,
+            "answerText": "\u03b1 = 4.0 \u00d7 10\u207b\u00b3 \u00b0C\u207b\u00b9 [\u03b1 = (3.7 \u2013 4.0) \u00d7 10\u207b\u00b3 \u00b0C\u207b\u00b9]\n....(01)",
+            "marks": 1
+        },
+        {
+            "id": "4_g",
+            "questionText": "For a certain type of material the temperature coefficient of resistance is negative around room temperature. Name the type of material.",
+            "answerText": "Semiconductor material\n... (02)",
+            "marks": 2
+        }
+    ],
+    "type": "past",
+    "year": 1681,
+    "questionNumber": "1681709770971",
+    "source": {
+        "type": "past_paper",
+        "exam": "GCE Advanced Level",
+        "subject": "Physics",
+        "year": 1681
+    }
+}

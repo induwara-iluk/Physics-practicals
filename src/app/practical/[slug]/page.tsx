@@ -7,6 +7,10 @@ import { practicalsList, slugify } from '@/data/practicals';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import { preprocessMarkdown } from '@/lib/markdownUtils';
 
 export default function PracticalPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -105,8 +109,22 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
               </h2>
               <div className="prose">
                 {loading ? <p className="animate-pulse">Loading theory...</p> : 
-                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                   {theory}
+                 <ReactMarkdown 
+                   remarkPlugins={[remarkGfm, remarkMath]} 
+                   rehypePlugins={[rehypeKatex, rehypeRaw]}
+                   components={{
+                     img: ({node, ...props}) => (
+                       <img 
+                         {...props} 
+                         style={{maxWidth: '100%', height: 'auto', borderRadius: '1rem', margin: '2rem 0', display: 'block'}}
+                         onError={(e) => {
+                           (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Image+Not+Found';
+                         }}
+                       />
+                     )
+                   }}
+                 >
+                   {preprocessMarkdown(theory)}
                  </ReactMarkdown>
                 }
               </div>
@@ -119,8 +137,22 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
               </h2>
               <div className="prose">
                 {loading ? <p className="animate-pulse">Loading method...</p> : 
-                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                   {method}
+                 <ReactMarkdown 
+                   remarkPlugins={[remarkGfm, remarkMath]} 
+                   rehypePlugins={[rehypeKatex, rehypeRaw]}
+                   components={{
+                     img: ({node, ...props}) => (
+                       <img 
+                         {...props} 
+                         style={{maxWidth: '100%', height: 'auto', borderRadius: '1rem', margin: '2rem 0', display: 'block'}}
+                         onError={(e) => {
+                           (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Image+Not+Found';
+                         }}
+                       />
+                     )
+                   }}
+                 >
+                   {preprocessMarkdown(method)}
                  </ReactMarkdown>
                 }
               </div>

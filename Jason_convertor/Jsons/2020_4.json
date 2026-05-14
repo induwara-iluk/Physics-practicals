@@ -1,0 +1,109 @@
+{
+    "year": 2020,
+    "questionNumber": "4",
+    "mainQuestionText": "A student plans to perform an experiment to determine the electromotive force (e.m.f.) E and the internal resistance r of a given cell using a graphical method. An incomplete circuit diagram that can be used for the experiment is given below. The student is provided with following items. Milliammeter (mA) Digital voltmeter (V) Standard resistor 10 \u03a9 Keys ---- and ---- ( )",
+    "subparts": [
+        "(a)",
+        "(b)(i)",
+        "(b)(ii)",
+        "(c)",
+        "(d)",
+        "(e)",
+        "(f)",
+        "(g)(i)",
+        "(g)(ii)",
+        "(h)",
+        "(i)"
+    ],
+    "subQuestions": [
+        {
+            "id": "a",
+            "part": "(a)",
+            "text": "Complete the circuit diagram correctly by drawing the appropriate symbols of the items given above.",
+            "marks": 2,
+            "answer": "01 mark for correct position of voltmeter; other mark for correct completion of the rest of the circuit [Award the relevant mark even if the milliammeter and 10 \u03a9 are interchanged]",
+            "imageUrl": "/Extracted_Diagrams/2020_4_a.jpg"
+        },
+        {
+            "id": "b_i",
+            "part": "(b)(i)",
+            "text": "Name the type of the key that the student must use:",
+            "marks": 1,
+            "answer": "Tap key"
+        },
+        {
+            "id": "b_ii",
+            "part": "(b)(ii)",
+            "text": "Give the reason for selecting the key.",
+            "marks": 1,
+            "answer": "To avoid discharge of the cell during the experiment/ to maintain constant E and r. OR To pass current through the circuit only when readings are taken. OR To avoid heating of resistors/cell."
+        },
+        {
+            "id": "c",
+            "part": "(c)",
+            "text": "Write down an expression for the voltmeter reading V, using the milliammeter reading I, the e.m.f. E and the internal resistance r.",
+            "marks": 2,
+            "answer": "V = \u2212rI + E OR V = E \u2212 Ir"
+        },
+        {
+            "id": "d",
+            "part": "(d)",
+            "text": "To plot a straight line graph, the student must select appropriate six values for the independent variable. How does the student identify the approximate range of the independent variable in order to select its suitable values?",
+            "marks": 2,
+            "answer": "(Press/close the tap key.) Move the sliding key of the rheostat to one end/ minimum current /maximum resistance and measure the minimum current. Move the sliding key to the other end/maximum current/ minimum resistance and measure the maximum current. These two values give the current range. [Sliding the key to one end/minimum current/maximum resistance - 01 mark; sliding the key to the other end/ maximum current/minimum resistance - 01 mark]"
+        },
+        {
+            "id": "e",
+            "part": "(e)",
+            "text": "Write down the procedure that the student must follow to take readings.",
+            "marks": 2,
+            "answer": "Press/close the tap key. [If a student has selected the plug key instead of the tap key above, award this mark for stating close the key] Move the sliding key of the rheostat to obtain the current to a selected/ known value and measure the voltmeter reading. Repeat the procedure (for six values of current.)"
+        },
+        {
+            "id": "f",
+            "part": "(f)",
+            "text": "In this experiment, the graph plotted by the student is given below.",
+            "marks": 0,
+            "answer": "See diagram.",
+            "imageUrl": "/Extracted_Diagrams/2020_4_f.jpg"
+        },
+        {
+            "id": "g_i",
+            "part": "(g)(i)",
+            "text": "What is the short-circuit current (in ampere) that can be obtained from the given cell? Give your answer to two decimal places.",
+            "marks": 2,
+            "answer": "Short-circuit current I_sc = 1.5 / 5.75 [Award this mark for the division] = 0.26 A"
+        },
+        {
+            "id": "g_ii",
+            "part": "(g)(ii)",
+            "text": "What is the maximum power that can be obtained from the cell by connecting an appropriate resistance?",
+            "marks": 2,
+            "answer": "Maximum power = (I_sc / 2)^2 * r = (0.13)^2 x 5.75 [Award the mark for the correct expression or substitution] = 0.097 W (0.097 \u2013 0.098 W) [OR (97-98) mW]"
+        },
+        {
+            "id": "h",
+            "part": "(h)",
+            "text": "If the same experiment is done for a nickel-cadmium (Ni-Cd) cell having a lower e.m.f. and a lower internal resistance, sketch the expected line in the same grid given in (f) above.",
+            "marks": 2,
+            "answer": "[Award 01 mark for a lower intercept, 01 mark for a lower gradient] [Award marks even if the line drawn crosses the line of the graph satisfying the conditions]"
+        },
+        {
+            "id": "i",
+            "part": "(i)",
+            "text": "Calculate the gradient of the graph using two suitable points. Then, using the calculated gradient, determine the internal resistance (r) and the electromotive force (E) of the cell.",
+            "marks": 4,
+            "answer": "Selecting (30, 1.32) and (110, 0.86) OR (96, 0.94) as two suitable points. Gradient = (1.32-0.86)V / (30-110)x10^-3 A = -5.75 \u03a9. [Award this mark for the gradient with negative sign; disregard the unit]. Internal resistance r = 5.75 \u03a9. [Award the mark for identifying r as the positive value of the gradient]. e.m.f. E = 1.5 V."
+        }
+    ],
+    "tags": [],
+    "title": "",
+    "type": "past",
+    "source": {
+        "type": "past_paper",
+        "exam": "GCE Advanced Level",
+        "subject": "Physics",
+        "year": 2020,
+        "variant": "English"
+    }
+}
