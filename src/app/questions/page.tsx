@@ -7,6 +7,19 @@ export default function QuestionsListPage() {
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [selectedMedium, setSelectedMedium] = useState<'English' | 'Sinhala'>('English');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('physicsMedium');
+    if (saved === 'English' || saved === 'Sinhala') {
+      setSelectedMedium(saved);
+    }
+  }, []);
+
+  const handleMediumChange = (m: 'English' | 'Sinhala') => {
+    setSelectedMedium(m);
+    localStorage.setItem('physicsMedium', m);
+  };
 
   useEffect(() => {
     fetch('/api/admin/questions')
@@ -18,11 +31,13 @@ export default function QuestionsListPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  const filteredQuestions = questions.filter(q => 
-    q.title?.toLowerCase().includes(search.toLowerCase()) ||
-    q.source?.year?.toString().includes(search) ||
-    q.source?.exam?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredQuestions = questions.filter(q => {
+    const matchesMedium = (q.medium || 'English') === selectedMedium;
+    const matchesSearch = q.title?.toLowerCase().includes(search.toLowerCase()) ||
+      q.source?.year?.toString().includes(search) ||
+      q.source?.exam?.toLowerCase().includes(search.toLowerCase());
+    return matchesMedium && matchesSearch;
+  });
 
   return (
     <div className="page-wrapper" style={{ minHeight: '100vh', paddingTop: '8rem', paddingBottom: '5rem' }}>
@@ -61,6 +76,53 @@ export default function QuestionsListPage() {
                 fontSize: '1rem'
               }}
             />
+          </div>
+
+          <div className="medium-selector-bar" style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+            <div className="medium-toggle" style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '1fr 1fr', 
+              gap: '0.5rem', 
+              background: 'rgba(0,0,0,0.3)', 
+              padding: '0.25rem', 
+              borderRadius: '0.75rem',
+              border: '1px solid rgba(255,255,255,0.05)',
+              width: '100%',
+              maxWidth: '300px'
+            }}>
+              <button 
+                onClick={() => handleMediumChange('English')}
+                className={`medium-btn ${selectedMedium === 'English' ? 'active' : ''}`}
+                style={{ 
+                  padding: '0.65rem', 
+                  border: 'none', 
+                  borderRadius: '0.6rem', 
+                  background: selectedMedium === 'English' ? 'var(--primary)' : 'transparent',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                English
+              </button>
+              <button 
+                onClick={() => handleMediumChange('Sinhala')}
+                className={`medium-btn ${selectedMedium === 'Sinhala' ? 'active' : ''}`}
+                style={{ 
+                  padding: '0.65rem', 
+                  border: 'none', 
+                  borderRadius: '0.6rem', 
+                  background: selectedMedium === 'Sinhala' ? 'var(--primary)' : 'transparent',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                සිංහල
+              </button>
+            </div>
           </div>
         </header>
 

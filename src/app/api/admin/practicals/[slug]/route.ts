@@ -26,7 +26,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         method: '',
         apparatus: [],
         importantPoints: [],
-        diagrams: []
+        diagrams: [],
+        medium: 'English'
       });
     }
     
@@ -42,6 +43,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         apparatus: [],
         importantPoints: [],
         diagrams: [],
+        medium: 'English',
         warning: 'MongoDB is not connected. Data shown is a placeholder. ' + error.message
       });
     }

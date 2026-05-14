@@ -8,20 +8,36 @@ export default function PracticePaperPage() {
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAllAnswers, setShowAllAnswers] = useState(false);
+  const [selectedMedium, setSelectedMedium] = useState<'English' | 'Sinhala'>('English');
 
   useEffect(() => {
+    const saved = localStorage.getItem('physicsMedium');
+    if (saved === 'English' || saved === 'Sinhala') {
+      setSelectedMedium(saved);
+    }
+  }, []);
+
+  const handleMediumChange = (m: 'English' | 'Sinhala') => {
+    setSelectedMedium(m);
+    localStorage.setItem('physicsMedium', m);
+  };
+
+  useEffect(() => {
+    setLoading(true);
     fetch('/api/admin/questions')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
+          // Filter by medium first
+          const mediumFiltered = data.filter(q => (q.medium || 'English') === selectedMedium);
+          
           // Filter questions with numbers 1, 2, 3, 4
-          // Or if not enough, just take the first 4
           const targetNumbers = ['1', '2', '3', '4'];
-          let filtered = data.filter(q => targetNumbers.includes(q.questionNumber));
+          let filtered = mediumFiltered.filter(q => targetNumbers.includes(q.questionNumber));
           
           // If we don't have exactly these numbers, let's just take the first 4 from the bank
           if (filtered.length < 4) {
-            const others = data.filter(q => !targetNumbers.includes(q.questionNumber));
+            const others = mediumFiltered.filter(q => !targetNumbers.includes(q.questionNumber));
             filtered = [...filtered, ...others].slice(0, 4);
           }
           
@@ -37,7 +53,7 @@ export default function PracticePaperPage() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [selectedMedium]);
 
   return (
     <div className="page-wrapper" style={{ minHeight: '100vh', paddingTop: '8rem', paddingBottom: '5rem', position: 'relative' }}>
@@ -51,6 +67,53 @@ export default function PracticePaperPage() {
           <p style={{ color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto' }}>
             Complete all four questions in this set. Write your answers in the spaces provided, then click the finish button at the bottom to reveal the official marking scheme.
           </p>
+
+          <div className="medium-selector-bar" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+            <div className="medium-toggle" style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '1fr 1fr', 
+              gap: '0.5rem', 
+              background: 'rgba(0,0,0,0.3)', 
+              padding: '0.25rem', 
+              borderRadius: '0.75rem',
+              border: '1px solid rgba(255,255,255,0.05)',
+              width: '100%',
+              maxWidth: '300px'
+            }}>
+              <button 
+                onClick={() => handleMediumChange('English')}
+                className={`medium-btn ${selectedMedium === 'English' ? 'active' : ''}`}
+                style={{ 
+                  padding: '0.65rem', 
+                  border: 'none', 
+                  borderRadius: '0.6rem', 
+                  background: selectedMedium === 'English' ? 'var(--primary)' : 'transparent',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                English
+              </button>
+              <button 
+                onClick={() => handleMediumChange('Sinhala')}
+                className={`medium-btn ${selectedMedium === 'Sinhala' ? 'active' : ''}`}
+                style={{ 
+                  padding: '0.65rem', 
+                  border: 'none', 
+                  borderRadius: '0.6rem', 
+                  background: selectedMedium === 'Sinhala' ? 'var(--primary)' : 'transparent',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                සිංහල
+              </button>
+            </div>
+          </div>
         </header>
 
         {loading ? (

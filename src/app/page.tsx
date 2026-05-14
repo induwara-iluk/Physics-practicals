@@ -10,6 +10,19 @@ export default function LandingPage() {
   const [dbPracticals, setDbPracticals] = useState<any[]>([]);
   const [dbQuestions, setDbQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedMedium, setSelectedMedium] = useState<'English' | 'Sinhala'>('English');
+  
+  useEffect(() => {
+    const saved = localStorage.getItem('physicsMedium');
+    if (saved === 'English' || saved === 'Sinhala') {
+      setSelectedMedium(saved);
+    }
+  }, []);
+
+  const handleMediumChange = (m: 'English' | 'Sinhala') => {
+    setSelectedMedium(m);
+    localStorage.setItem('physicsMedium', m);
+  };
 
   useEffect(() => {
     Promise.all([
@@ -24,15 +37,19 @@ export default function LandingPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  const categories = ['All', ...new Set(dbPracticals.map(p => p.category))];
+  const categories = useMemo(() => {
+    const filteredByMedium = dbPracticals.filter(p => p.medium === selectedMedium || !p.medium); // fallback for old data
+    return ['All', ...new Set(filteredByMedium.map(p => p.category))];
+  }, [dbPracticals, selectedMedium]);
 
   const filteredPracticals = useMemo(() => {
     return dbPracticals.filter(p => {
+      const matchesMedium = (p.medium || 'English') === selectedMedium;
       const matchesSearch = p.title.toLowerCase().includes(search.toLowerCase());
       const matchesCategory = activeCategory === 'All' || p.category === activeCategory;
-      return matchesSearch && matchesCategory;
+      return matchesMedium && matchesSearch && matchesCategory;
     });
-  }, [search, activeCategory, dbPracticals]);
+  }, [search, activeCategory, dbPracticals, selectedMedium]);
 
   return (
     <div className="page-wrapper">
@@ -48,7 +65,25 @@ export default function LandingPage() {
         <div className="body-layout">
           {/* Sidebar */}
           <aside className="sidebar animate-up" style={{ animationDelay: '0.15s' }}>
-            <p className="sidebar-label">Categories</p>
+            <div className="medium-selector-card glass-dark">
+              <p className="sidebar-label">Select Your Medium</p>
+              <div className="medium-toggle">
+                <button 
+                  className={`medium-btn ${selectedMedium === 'English' ? 'active' : ''}`}
+                  onClick={() => handleMediumChange('English')}
+                >
+                  English
+                </button>
+                <button 
+                  className={`medium-btn ${selectedMedium === 'Sinhala' ? 'active' : ''}`}
+                  onClick={() => handleMediumChange('Sinhala')}
+                >
+                  සිංහල
+                </button>
+              </div>
+            </div>
+
+            <p className="sidebar-label" style={{ marginTop: '2rem' }}>Categories</p>
             <nav className="cat-nav hide-scrollbar">
               {categories.map((cat) => (
                 <button
@@ -658,6 +693,49 @@ export default function LandingPage() {
             width: 100%;
             text-align: left;
             padding: 0.75rem 1.25rem;
+          }
+
+          .medium-selector-card {
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(124, 110, 242, 0.2);
+            background: linear-gradient(135deg, rgba(124, 110, 242, 0.05), rgba(0, 0, 0, 0.2));
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          }
+
+          .medium-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.35rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+          }
+
+          .medium-btn {
+            padding: 1rem 0.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            background: transparent;
+            color: var(--text-lo);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          }
+
+          .medium-btn:hover {
+            color: var(--text-hi);
+            background: rgba(255, 255, 255, 0.03);
+          }
+
+          .medium-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 110, 242, 0.4);
+            transform: scale(1.02);
           }
         }
 

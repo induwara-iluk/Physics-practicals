@@ -30,6 +30,7 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
   const [tags, setTags] = useState('');
   const [difficulty, setDifficulty] = useState('medium');
   const [mainQuestionText, setMainQuestionText] = useState('');
+  const [medium, setMedium] = useState<'English' | 'Sinhala'>('English');
 
   // Arrays
   const [figures, setFigures] = useState<{label: string, imageUrl: string}[]>([]);
@@ -68,6 +69,7 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
           setTags(data.tags ? data.tags.join(', ') : '');
           setDifficulty(data.difficulty || 'medium');
           setMainQuestionText(data.mainQuestionText || '');
+          setMedium(data.medium || 'English');
           
           setFigures(data.figures || []);
           setSubQuestions(data.subQuestions || []);
@@ -99,6 +101,7 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
     setTopAnswer('');
     setMarkingScheme([]);
     setAnswers([]);
+    setMedium('English');
   };
 
   const handleUploadImage = async (file: File): Promise<string | null> => {
@@ -149,7 +152,8 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
         answer: topAnswer,
         subQuestions,
         markingScheme,
-        answers
+        answers,
+        medium
       };
       
       const isNew = selectedQuestionId === 'new';
@@ -225,6 +229,13 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
           <label>Difficulty</label>
           <select value={difficulty} onChange={e=>setDifficulty(e.target.value)} className="title-input">
             <option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Medium (Language)</label>
+          <select value={medium} onChange={e=>setMedium(e.target.value as 'English' | 'Sinhala')} className="title-input">
+            <option value="English">English</option>
+            <option value="Sinhala">Sinhala</option>
           </select>
         </div>
       </div>

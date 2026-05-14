@@ -25,6 +25,7 @@ export default function AdminPage() {
   const [apparatus, setApparatus] = useState('');
   const [importantPoints, setImportantPoints] = useState('');
   const [diagrams, setDiagrams] = useState('');
+  const [medium, setMedium] = useState<'English' | 'Sinhala'>('English');
 
 
   // Fetch all practicals & questions for the sidebar
@@ -66,6 +67,7 @@ export default function AdminPage() {
           setApparatus(data.apparatus ? data.apparatus.join('\n') : '');
           setImportantPoints(data.importantPoints ? data.importantPoints.join('\n') : '');
           setDiagrams(data.diagrams ? data.diagrams.join('\n') : '');
+          setMedium(data.medium || 'English');
           
           if (data.warning) {
             setMessage('⚠️ ' + data.warning);
@@ -99,6 +101,7 @@ export default function AdminPage() {
         apparatus: apparatus.split('\n').filter(s => s.trim()),
         importantPoints: importantPoints.split('\n').filter(s => s.trim()),
         diagrams: diagrams.split('\n').filter(s => s.trim()),
+        medium,
       };
       
       const res = await fetch(`/api/admin/practicals/${selectedSlug}`, {
@@ -221,6 +224,18 @@ export default function AdminPage() {
                       className="title-input"
                       required
                     />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Medium (Language)</label>
+                    <select 
+                      value={medium} 
+                      onChange={e => setMedium(e.target.value as 'English' | 'Sinhala')} 
+                      className="title-input"
+                    >
+                      <option value="English">English</option>
+                      <option value="Sinhala">Sinhala</option>
+                    </select>
                   </div>
 
                   <div className="form-group">

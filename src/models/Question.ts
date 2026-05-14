@@ -28,6 +28,7 @@ export interface IQuestion extends Document {
   }[];
   markingScheme: { subQuestionId: string; answer: string }[];
   answers: { subQuestionId: string; latex: string }[];
+  medium: 'English' | 'Sinhala';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -68,7 +69,8 @@ const QuestionSchema: Schema = new Schema({
   answers: [{
     subQuestionId: { type: String },
     latex: { type: String }
-  }]
+  }],
+  medium: { type: String, enum: ['English', 'Sinhala'], default: 'English' }
 }, { timestamps: true });
 
 export default mongoose.models.Question || mongoose.model<IQuestion>('Question', QuestionSchema);
