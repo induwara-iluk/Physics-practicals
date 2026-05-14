@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 import path from 'path';
 
 export async function POST(request: NextRequest) {
@@ -11,6 +12,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'No file uploaded' }, { status: 400 });
     }
 
+    // Validate that the file is an image
+    if (!file.type.startsWith('image/')) {
+      return NextResponse.json({ success: false, error: 'Only image files are allowed' }, { status: 400 });
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
@@ -19,20 +25,28 @@ export async function POST(request: NextRequest) {
     const originalExt = path.extname(file.name);
     const filename = `${uniqueSuffix}${originalExt}`;
 
-    const uploadDir = path.join(process.cwd(), 'public/uploads');
-    
-    // Ensure the uploads directory exists (Next.js public folder)
-    const fs = require('fs');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+
+    // Upload to Supabase Storage
+    const { data: uploadData, error } = await supabase.storage
+      .from('Practical_images')
+      .upload(filename, buffer, {
+        contentType: file.type,
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) {
+      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 
-    const filepath = path.join(uploadDir, filename);
-    await writeFile(filepath, buffer);
+    // Get the public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('practicals')
+      .getPublicUrl(filename);
 
-    const fileUrl = `/uploads/${filename}`;
-
-    return NextResponse.json({ success: true, url: fileUrl });
+    return NextResponse.json({ success: true, url: publicUrl });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
