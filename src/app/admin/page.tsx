@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AdminQuestionForm from '@/components/AdminQuestionForm';
+import ImageUploadButton from '@/components/ImageUploadButton';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'practicals' | 'questions'>('practicals');
@@ -123,6 +124,25 @@ export default function AdminPage() {
     }
   };
 
+  const insertAtCursor = (field: 'theory' | 'method', text: string) => {
+    const textarea = document.getElementById(field) as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentVal = field === 'theory' ? theory : method;
+    const newVal = currentVal.substring(0, start) + text + currentVal.substring(end);
+    
+    if (field === 'theory') setTheory(newVal);
+    else setMethod(newVal);
+
+    // Reset cursor position after state update
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + text.length, start + text.length);
+    }, 0);
+  };
+
   return (
     <div className="admin-wrapper">
       <div className="container">
@@ -239,8 +259,14 @@ export default function AdminPage() {
                   </div>
 
                   <div className="form-group">
-                    <label>Theory (Markdown/Text)</label>
+                    <div className="label-with-action">
+                      <label htmlFor="theory">Theory (Markdown/Text)</label>
+                      <ImageUploadButton 
+                        onImageUploaded={(url) => insertAtCursor('theory', `\n\n![Image](${url})\n\n`)} 
+                      />
+                    </div>
                     <textarea 
+                      id="theory"
                       value={theory} 
                       onChange={e => setTheory(e.target.value)} 
                       rows={6}
@@ -249,12 +275,18 @@ export default function AdminPage() {
                   </div>
 
                   <div className="form-group">
-                    <label>Experimental Method</label>
+                    <div className="label-with-action">
+                      <label htmlFor="method">Experimental Method & Setup</label>
+                      <ImageUploadButton 
+                        onImageUploaded={(url) => insertAtCursor('method', `\n\n![Image](${url})\n\n`)} 
+                      />
+                    </div>
                     <textarea 
+                      id="method"
                       value={method} 
                       onChange={e => setMethod(e.target.value)} 
                       rows={8}
-                      placeholder="Enter step-by-step method here..."
+                      placeholder="Enter step-by-step method and setup instructions here..."
                     />
                   </div>
 
@@ -507,6 +539,17 @@ export default function AdminPage() {
         textarea:focus, .title-input:focus {
           outline: none;
           border-color: var(--primary);
+        }
+
+        .label-with-action {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+        }
+
+        .label-with-action label {
+          margin-bottom: 0;
         }
 
         .form-actions {

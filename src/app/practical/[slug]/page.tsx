@@ -5,6 +5,8 @@ import Link from 'next/link';
 import QuestionDisplay from '@/components/QuestionDisplay';
 import { practicalsList, slugify } from '@/data/practicals';
 import { notFound } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function PracticalPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -14,16 +16,26 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
   const [practicalData, setPracticalData] = useState<any>(null);
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error404, setError404] = useState(false);
 
   useEffect(() => {
-    if (!staticPractical) return;
+    setLoading(true);
+    setError404(false);
     
     Promise.all([
-      fetch(`/api/admin/practicals/${slug}`).then(res => res.json()),
+      fetch(`/api/admin/practicals/${slug}`).then(res => {
+        if (res.status === 404) {
+          setError404(true);
+          return null;
+        }
+        return res.json();
+      }),
       fetch('/api/admin/questions').then(res => res.json())
     ])
       .then(([practicalRes, questionsData]) => {
-        setPracticalData(practicalRes);
+        if (practicalRes) {
+          setPracticalData(practicalRes);
+        }
         if (Array.isArray(questionsData)) {
           const related = questionsData.filter(q => q.practicalId?.slug === slug);
           setQuestions(related);
@@ -33,18 +45,20 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
       .catch(() => {
         setLoading(false);
       });
-  }, [slug, staticPractical]);
+  }, [slug]);
 
-  if (!staticPractical) {
+  if (error404) {
     notFound();
   }
 
-  const title = practicalData?.title || staticPractical.title;
+  const title = practicalData?.title || staticPractical?.title || 'Loading...';
   const theory = practicalData?.theory || 'The detailed theoretical background for this practical is currently being prepared.';
   const method = practicalData?.method || 'Step-by-step procedures and setup instructions will be detailed here.';
   const apparatus = practicalData?.apparatus?.length > 0 ? practicalData.apparatus : ['Pending apparatus list...'];
   const importantPoints = practicalData?.importantPoints?.length > 0 ? practicalData.importantPoints : ['Important marking point for examination pending.'];
   const diagrams = practicalData?.diagrams || [];
+  const category = practicalData?.category || staticPractical?.category || 'General Physics';
+  const pNumber = index !== -1 ? `PRACTICAL #${index + 1}` : 'DYNAMIC PRACTICAL';
 
   return (
     <div className="page-wrapper">
@@ -58,9 +72,9 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
         <header className="header">
           <div className="meta-info">
             <span className="category-badge">
-              {staticPractical.category}
+              {category}
             </span>
-            <span className="practical-number">PRACTICAL #{index + 1}</span>
+            <span className="practical-number">{pNumber}</span>
           </div>
           <h1 className="title">
             {title}
@@ -91,9 +105,9 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
               </h2>
               <div className="prose">
                 {loading ? <p className="animate-pulse">Loading theory...</p> : 
-                 theory.split('\n').map((line: string, i: number) => (
-                   <p key={i} className="mb-4">{line}</p>
-                 ))
+                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                   {theory}
+                 </ReactMarkdown>
                 }
               </div>
             </section>
@@ -105,9 +119,9 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
               </h2>
               <div className="prose">
                 {loading ? <p className="animate-pulse">Loading method...</p> : 
-                 method.split('\n').map((line: string, i: number) => (
-                   <p key={i} className="mb-4">{line}</p>
-                 ))
+                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                   {method}
+                 </ReactMarkdown>
                 }
               </div>
             </section>
@@ -300,7 +314,34 @@ export default function PracticalPage({ params }: { params: Promise<{ slug: stri
         .prose {
           color: var(--text-muted);
           line-height: 1.75;
-          font-size: 1rem;
+          font-size: 1.05rem;
+        }
+
+        .prose :global(p) {
+          margin-bottom: 1.25rem;
+        }
+
+        .prose :global(img) {
+          max-width: 100%;
+          height: auto;
+          border-radius: 1rem;
+          margin: 2rem 0;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .prose :global(ul), .prose :global(ol) {
+          margin-bottom: 1.25rem;
+          padding-left: 1.5rem;
+        }
+
+        .prose :global(li) {
+          margin-bottom: 0.5rem;
+        }
+
+        .prose :global(strong) {
+          color: white;
+          font-weight: 700;
         }
 
         .diagrams-grid {
