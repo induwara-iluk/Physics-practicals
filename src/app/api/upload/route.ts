@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
+import { createClient } from '@supabase/supabase-js';
 import path from 'path';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,8 +27,12 @@ export async function POST(request: NextRequest) {
     const originalExt = path.extname(file.name);
     const filename = `${uniqueSuffix}${originalExt}`;
 
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Supabase credentials missing in environment variables');
+    }
+
+    // Use Service Role Key to bypass RLS for admin uploads
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Upload to Supabase Storage
     const { data: uploadData, error } = await supabase.storage
@@ -43,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     // Get the public URL
     const { data: { publicUrl } } = supabase.storage
-      .from('practicals')
+      .from('Practical_images')
       .getPublicUrl(filename);
 
     return NextResponse.json({ success: true, url: publicUrl });
