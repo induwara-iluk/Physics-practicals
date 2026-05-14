@@ -19,7 +19,7 @@ const wrongBucketUrl = `${supabaseUrl}/storage/v1/object/public/practicals/`;
 
 async function updateUrls() {
   try {
-    await mongoose.connect(mongodbUri);
+    await mongoose.connect(mongodbUri!);
     console.log('Connected to MongoDB');
 
     // 1. Update Practicals
