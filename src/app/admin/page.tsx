@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AdminQuestionForm from '@/components/AdminQuestionForm';
 import ImageUploadButton from '@/components/ImageUploadButton';
+import MarkdownPreview from '@/components/MarkdownPreview';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'practicals' | 'questions'>('practicals');
@@ -339,19 +340,21 @@ export default function AdminPage() {
                       id="method"
                       value={method} 
                       onChange={e => setMethod(e.target.value)} 
-                      rows={10}
-                      placeholder="Enter step-by-step method and setup instructions here..."
+                      rows={8}
+                      placeholder="List the steps of the experiment..."
                     />
+                    <MarkdownPreview content={method} label="Method" />
                   </div>
 
                   <div className="form-group">
-                    <label>Important Points (One per line - supports Markdown/LaTeX)</label>
+                    <label>Important Points (Markdown/LaTeX supported, One per line)</label>
                     <textarea 
                       value={importantPoints} 
                       onChange={e => setImportantPoints(e.target.value)} 
                       rows={5}
                       placeholder="Enter crucial marking points..."
                     />
+                    <MarkdownPreview content={importantPoints} label="Important Points" />
                   </div>
 
                   <div className="form-group">

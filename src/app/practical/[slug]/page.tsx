@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import dbConnect from '@/lib/mongodb';
 import Practical from '@/models/Practical';
+import Question from '@/models/Question';
 import PracticalClient from '@/components/PracticalClient';
 
 // Force dynamic to ensure fresh data
@@ -20,8 +21,19 @@ async function getPractical(slug: string) {
   }
 }
 
-export default async function PracticalPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+async function getRelatedQuestions(practicalId: string) {
+  try {
+    await dbConnect();
+    const questions = await Question.find({ practicalId }).sort({ questionNumber: 1 }).lean();
+    return JSON.parse(JSON.stringify(questions));
+  } catch (error) {
+    console.error('Failed to fetch related questions:', error);
+    return [];
+  }
+}
+
+export default async function PracticalPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const practical = await getPractical(slug);
 
   if (!practical) {
@@ -57,7 +69,10 @@ export default async function PracticalPage({ params }: { params: { slug: string
           <span className="nav-current">{practical.category}</span>
         </nav>
 
-        <PracticalClient practical={practical} />
+        <PracticalClient 
+          practical={practical} 
+          relatedQuestions={await getRelatedQuestions(practical._id)} 
+        />
       </div>
     </div>
   );

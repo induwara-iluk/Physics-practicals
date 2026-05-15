@@ -56,59 +56,25 @@ export default function PracticePaperPage() {
   }, [selectedMedium]);
 
   return (
-    <div className="page-wrapper" style={{ minHeight: '100vh', paddingTop: '8rem', paddingBottom: '5rem', position: 'relative' }}>
-      <div className="bg-glow" style={{ position: 'fixed', top: 0, left: 0, right: 0, height: '300px', background: 'linear-gradient(to bottom, rgba(99, 102, 241, 0.05), transparent)', zIndex: -10, pointerEvents: 'none' }} />
-      
-      <div className="container" style={{ maxWidth: '900px', margin: '0 auto', padding: '0 1.5rem' }}>
-        <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'white', marginBottom: '1rem' }}>
-            Practice Paper #01
-          </h1>
-          <p style={{ color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto' }}>
+    <div className="page-wrapper">
+      <div className="main-container" style={{ maxWidth: '900px' }}>
+        <header className="hero-section mb-12">
+          <h1 className="hero-title">Practice Paper #01</h1>
+          <p className="subtitle" style={{ margin: '0 auto' }}>
             Complete all four questions in this set. Write your answers in the spaces provided, then click the finish button at the bottom to reveal the official marking scheme.
           </p>
 
-          <div className="medium-selector-bar" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-            <div className="medium-toggle" style={{ 
-              display: 'grid', 
-              gridTemplateColumns: '1fr 1fr', 
-              gap: '0.5rem', 
-              background: 'rgba(0,0,0,0.3)', 
-              padding: '0.25rem', 
-              borderRadius: '0.75rem',
-              border: '1px solid rgba(255,255,255,0.05)',
-              width: '100%',
-              maxWidth: '300px'
-            }}>
+          <div className="medium-selector-bar" style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
+            <div className="medium-toggle">
               <button 
                 onClick={() => handleMediumChange('English')}
                 className={`medium-btn ${selectedMedium === 'English' ? 'active' : ''}`}
-                style={{ 
-                  padding: '0.65rem', 
-                  border: 'none', 
-                  borderRadius: '0.6rem', 
-                  background: selectedMedium === 'English' ? 'var(--primary)' : 'transparent',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
               >
                 English
               </button>
               <button 
                 onClick={() => handleMediumChange('Sinhala')}
                 className={`medium-btn ${selectedMedium === 'Sinhala' ? 'active' : ''}`}
-                style={{ 
-                  padding: '0.65rem', 
-                  border: 'none', 
-                  borderRadius: '0.6rem', 
-                  background: selectedMedium === 'Sinhala' ? 'var(--primary)' : 'transparent',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
               >
                 සිංහල
               </button>
@@ -117,27 +83,16 @@ export default function PracticePaperPage() {
         </header>
 
         {loading ? (
-          <div style={{ color: 'white', textAlign: 'center' }} className="animate-pulse">Preparing your practice paper...</div>
+          <div className="loading">Preparing your practice paper...</div>
         ) : (
           <div className="questions-stack">
             {questions.map((q, idx) => (
-              <div key={q._id} style={{ marginBottom: '4rem' }}>
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <span style={{ 
-                    background: 'var(--primary)', 
-                    color: 'white', 
-                    width: '40px', 
-                    height: '40px', 
-                    borderRadius: '50%', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '1.2rem'
-                  }}>
+              <div key={q._id} className="section-card mb-12">
+                <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                  <div className="point-indicator" style={{ background: 'var(--primary)' }}>
                     {idx + 1}
-                  </span>
-                  <h2 style={{ fontSize: '1.5rem', color: 'white', margin: 0 }}>
+                  </div>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text)', margin: 0 }}>
                     {q.title || `Structured Essay Question`}
                   </h2>
                 </div>
@@ -150,11 +105,11 @@ export default function PracticePaperPage() {
             ))}
 
             {!showAllAnswers && questions.length > 0 && (
-              <div style={{ textAlign: 'center', marginTop: '4rem', padding: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <div style={{ textAlign: 'center', marginTop: '4rem', padding: '3rem', background: '#f8fafc', borderRadius: '2rem', border: '1px solid var(--border)' }}>
                 <button 
                   onClick={() => setShowAllAnswers(true)}
-                  className="btn btn-primary"
-                  style={{ padding: '1rem 2.5rem', fontSize: '1.1rem', borderRadius: '1rem' }}
+                  className="complete-btn active"
+                  style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}
                 >
                   Finish and Show Answers
                 </button>
@@ -165,7 +120,7 @@ export default function PracticePaperPage() {
               <div style={{ textAlign: 'center', marginTop: '4rem' }}>
                 <button 
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className="btn btn-outline"
+                  className="complete-btn"
                 >
                   Back to Top
                 </button>

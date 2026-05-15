@@ -5,9 +5,12 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import Link from 'next/link';
 import 'katex/dist/katex.min.css';
+import { preprocessMarkdown } from '@/lib/markdownUtils';
 
 interface Practical {
+  _id: string;
   title: string;
   slug: string;
   category: string;
@@ -21,7 +24,13 @@ interface Practical {
   practicalNumber?: number;
 }
 
-export default function PracticalClient({ practical }: { practical: Practical }) {
+export default function PracticalClient({ 
+  practical, 
+  relatedQuestions = [] 
+}: { 
+  practical: Practical, 
+  relatedQuestions?: any[] 
+}) {
   const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
@@ -50,22 +59,8 @@ export default function PracticalClient({ practical }: { practical: Practical })
 
   return (
     <div className="practical-container">
-      {/* 1. Diagrams / Setup */}
-      {practical.diagrams && practical.diagrams.length > 0 && (
-        <section className="diagram-grid mb-8">
-          {practical.diagrams.map((url, index) => (
-            <div key={index} className="diagram-card glass animate-fade">
-              <img src={url} alt={`Experimental Setup ${index + 1}`} className="setup-img" />
-              <div className="img-overlay">
-                <span>Setup Diagram {index + 1}</span>
-              </div>
-            </div>
-          ))}
-        </section>
-      )}
-
       {/* Hero Header */}
-      <header className="hero-section glass mb-8">
+      <header className="hero-section mb-12">
         <div className="hero-top">
           <span className="p-number">#{practical.practicalNumber || 'N/A'}</span>
           <span className="p-category">{practical.category}</span>
@@ -90,23 +85,28 @@ export default function PracticalClient({ practical }: { practical: Practical })
       </header>
 
       {/* 2. Required Apparatus */}
-      <section className="glass section-card mb-8">
+      <section className="section-card mb-8">
         <h2 className="section-title">
           <span className="title-marker" style={{background: '#fbbf24'}}></span>
           Required Apparatus
         </h2>
         <div className="apparatus-text">
-          <p className="prose">
-            {practical.apparatus
-              .flatMap((item: string) => item.split(',').map(s => s.trim()))
-              .filter(Boolean)
-              .join(', ')}
-          </p>
+          <div className="prose-content">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm, remarkMath]} 
+              rehypePlugins={[rehypeKatex]}
+            >
+              {preprocessMarkdown(practical.apparatus
+                .flatMap((item: string) => item.split(',').map(s => s.trim()))
+                .filter(Boolean)
+                .join(', '))}
+            </ReactMarkdown>
+          </div>
         </div>
       </section>
 
       {/* 3. Scientific Theory */}
-      <section className="glass section-card mb-8">
+      <section className="section-card mb-8">
         <h2 className="section-title">
           <span className="title-marker" style={{background: '#6366f1'}}></span>
           Scientific Theory
@@ -116,13 +116,13 @@ export default function PracticalClient({ practical }: { practical: Practical })
             remarkPlugins={[remarkGfm, remarkMath]} 
             rehypePlugins={[rehypeKatex]}
           >
-            {practical.theory}
+            {preprocessMarkdown(practical.theory)}
           </ReactMarkdown>
         </div>
       </section>
 
       {/* 4. Experimental Method */}
-      <section className="glass section-card mb-8">
+      <section className="section-card mb-8">
         <h2 className="section-title">
           <span className="title-marker" style={{background: '#22c55e'}}></span>
           Experimental Method
@@ -132,14 +132,14 @@ export default function PracticalClient({ practical }: { practical: Practical })
             remarkPlugins={[remarkGfm, remarkMath]} 
             rehypePlugins={[rehypeKatex]}
           >
-            {practical.method}
+            {preprocessMarkdown(practical.method)}
           </ReactMarkdown>
         </div>
       </section>
 
       {/* 5. Critical Observations & Important Points */}
       {practical.importantPoints && practical.importantPoints.length > 0 && (
-        <section className="glass section-card mb-12 highlight-section">
+        <section className="section-card mb-8 highlight-section">
           <h2 className="section-title">
             <span className="title-marker" style={{background: '#f43f5e'}}></span>
             Important Points
@@ -153,10 +153,58 @@ export default function PracticalClient({ practical }: { practical: Practical })
                     remarkPlugins={[remarkGfm, remarkMath]} 
                     rehypePlugins={[rehypeKatex]}
                   >
-                    {point}
+                    {preprocessMarkdown(point)}
                   </ReactMarkdown>
                 </div>
               </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 6. Related Questions */}
+      {relatedQuestions.length > 0 && (
+        <section className="section-card mb-12">
+          <h2 className="section-title">
+            <span className="title-marker" style={{background: 'var(--primary)'}}></span>
+            Related Practice Questions
+          </h2>
+          <div className="list-body">
+            {relatedQuestions.map((q) => (
+              <Link 
+                key={q._id} 
+                href={`/question/${q._id}`} 
+                className="practical-card"
+                style={{ padding: '1.25rem' }}
+              >
+                <div className="p-number-box" style={{ 
+                  width: '3.5rem', 
+                  height: '3.5rem', 
+                  background: '#f1f5f9', 
+                  borderRadius: '0.75rem', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: 'var(--primary)',
+                  fontWeight: '800',
+                  fontSize: '1.1rem'
+                }}>
+                  Q{q.questionNumber}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <h3 className="p-title" style={{ margin: 0, fontSize: '1.1rem', marginBottom: '0.25rem' }}>
+                    {q.title || `${q.source?.exam} Structured Essay`}
+                  </h3>
+                  <span className="p-category">
+                    {q.source?.year} • {q.source?.exam} • {q.difficulty}
+                  </span>
+                </div>
+                <div className="card-action">
+                  <svg className="item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </Link>
             ))}
           </div>
         </section>

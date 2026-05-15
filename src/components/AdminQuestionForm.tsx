@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import MarkdownPreview from './MarkdownPreview';
 
 type AdminQuestionFormProps = {
   selectedQuestionId: string;
@@ -243,11 +244,13 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
       <div className="form-group">
         <label>Main Question Text</label>
         <textarea value={mainQuestionText} onChange={e => setMainQuestionText(e.target.value)} rows={4} className="title-input" required />
+        <MarkdownPreview content={mainQuestionText} label="Main Question" />
       </div>
 
       <div className="form-group">
         <label>Top Level Answer (Optional)</label>
         <textarea value={topAnswer} onChange={e => setTopAnswer(e.target.value)} rows={2} className="title-input" />
+        <MarkdownPreview content={topAnswer} label="Top Answer" />
       </div>
 
       {/* Sub Questions */}
@@ -262,10 +265,12 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
             <div className="form-group">
               <label>Question Text</label>
               <textarea value={sq.text} onChange={e => { const n = [...subQuestions]; n[idx].text = e.target.value; setSubQuestions(n); }} rows={2} className="title-input"/>
+              <MarkdownPreview content={sq.text} label={`Part ${sq.part} Question`} />
             </div>
             <div className="form-group">
               <label>Answer (Text/LaTeX)</label>
               <textarea value={sq.answer || ''} onChange={e => { const n = [...subQuestions]; n[idx].answer = e.target.value; setSubQuestions(n); }} rows={2} className="title-input"/>
+              <MarkdownPreview content={sq.answer || ''} label={`Part ${sq.part} Answer`} />
             </div>
             <div className="form-row">
               <div className="form-group">

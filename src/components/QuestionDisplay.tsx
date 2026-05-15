@@ -28,20 +28,20 @@ const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQues
   const isVisible = forceShowAnswer || showAnswer;
 
   return (
-    <div className="sq-card" style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '0.5rem', borderLeft: '3px solid rgba(255,255,255,0.1)' }}>
+    <div className="sq-card">
       {sq.imageUrl && (
         <img 
           src={fixImageUrls(sq.imageUrl)} 
           alt="subpart image" 
-          style={{ maxWidth: '100%', marginBottom: '1rem', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} 
+          style={{ maxWidth: '100%', marginBottom: '1.5rem', borderRadius: '1rem', border: '1px solid var(--border)' }} 
           onError={(e) => {
             (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Image+Not+Found';
           }}
         />
       )}
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <span style={{ fontWeight: 'bold', color: 'white', minWidth: '35px' }}>{sq.part}</span>
-        <div className="q-content" style={{ color: 'var(--text-muted)', flex: 1, lineHeight: '1.6' }}>
+      <div style={{ display: 'flex', gap: '1.5rem' }}>
+        <span className="q-part-label">{sq.part}</span>
+        <div className="prose-content" style={{ flex: 1 }}>
           <ReactMarkdown 
             remarkPlugins={[remarkGfm, remarkMath]} 
             rehypePlugins={[rehypeKatex, rehypeRaw]}
@@ -49,7 +49,7 @@ const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQues
               img: ({node, ...props}) => (
                 <img 
                   {...props} 
-                  style={{maxWidth: '100%', borderRadius: '0.5rem'}}
+                  style={{maxWidth: '100%', borderRadius: '1rem', marginTop: '1rem'}}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = 'https://placehold.co/400x300?text=Image+Not+Found';
                   }}
@@ -63,49 +63,26 @@ const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQues
       </div>
       
       {/* User Input Area */}
-      <div style={{ marginTop: '1rem' }}>
+      <div style={{ marginTop: '1.5rem' }}>
         <textarea 
           placeholder="Type your answer here..."
+          className="answer-textarea"
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
-          style={{
-            width: '100%',
-            background: 'rgba(0,0,0,0.3)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '0.5rem',
-            padding: '0.75rem',
-            color: 'white',
-            fontSize: '0.9rem',
-            minHeight: '80px',
-            resize: 'vertical',
-            outline: 'none',
-            fontFamily: 'inherit'
-          }}
         />
       </div>
 
       {!hideIndividualButtons && (
-        <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <button 
             onClick={() => setShowAnswer(!showAnswer)}
-            style={{
-              background: showAnswer ? 'rgba(255,255,255,0.1)' : 'var(--primary)',
-              color: 'white',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '0.375rem',
-              fontSize: '0.8rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              opacity: showAnswer ? 0.7 : 1
-            }}
+            className={`complete-btn ${showAnswer ? 'active' : ''}`}
           >
             {showAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
           </button>
           
           {sq.marks && sq.marks > 0 && (
-            <div style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 'bold' }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: '800' }}>
               [{sq.marks} Marks]
             </div>
           )}
@@ -113,9 +90,9 @@ const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQues
       )}
       
       {isVisible && sq.answer && (
-        <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(34, 197, 94, 0.08)', borderLeft: '3px solid #4ade80', borderRadius: '0.375rem', animation: 'fadeIn 0.3s ease-out' }}>
-          <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#4ade80', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.4rem' }}>Official Marking Scheme / Answer</span>
-          <div className="q-content" style={{ color: '#f8fafc', fontSize: '0.95rem', lineHeight: '1.6' }}>
+        <div className="official-answer-box">
+          <span className="answer-label">Official Marking Scheme / Answer</span>
+          <div className="prose-content" style={{ fontSize: '1.05rem' }}>
             <ReactMarkdown 
               remarkPlugins={[remarkGfm, remarkMath]} 
               rehypePlugins={[rehypeKatex, rehypeRaw]}
@@ -143,35 +120,35 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
   const isVisible = forceShowAnswer || showTopAnswer;
 
   return (
-    <div className="question-card" style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '0.75rem', marginBottom: '1.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-      <div className="q-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-        <h3 style={{ fontSize: '1.2rem', color: 'white', margin: 0 }}>
+    <div className="question-card">
+      <div className="q-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <h3>
           {q.title || `Question ${q.questionNumber || (idx !== undefined ? idx + 1 : '')}`}
         </h3>
-        <span style={{ fontSize: '0.8rem', color: 'var(--primary)', border: '1px solid var(--primary)', padding: '0.2rem 0.5rem', borderRadius: '0.25rem' }}>
+        <span className="q-tag">
           {q.source?.year} • {q.source?.exam} • {q.difficulty?.toUpperCase()}
         </span>
       </div>
       
       {q.figures && q.figures.length > 0 && (
-        <div className="q-figures" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', marginBottom: '1.5rem', paddingBottom: '0.5rem' }}>
+        <div className="q-figures" style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', marginBottom: '2.5rem', paddingBottom: '1rem' }}>
           {q.figures.map((fig: any, i: number) => (
-            <div key={i} style={{ minWidth: '250px', flex: '0 0 auto' }}>
+            <div key={i} style={{ minWidth: '300px', flex: '0 0 auto' }}>
           <img 
             src={fixImageUrls(fig.imageUrl)} 
             alt={fig.label || `Figure ${i+1}`} 
-            style={{ width: '100%', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }} 
+            style={{ width: '100%', borderRadius: '1.5rem', border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} 
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Figure+Not+Found';
             }}
           />
-              {fig.label && <p style={{ fontSize: '0.85rem', textAlign: 'center', marginTop: '0.5rem', color: 'var(--text-muted)' }}>{fig.label}</p>}
+              {fig.label && <p style={{ fontSize: '0.9rem', textAlign: 'center', marginTop: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>{fig.label}</p>}
             </div>
           ))}
         </div>
       )}
 
-      <div className="q-content q-text" style={{ color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: '1.6' }}>
+      <div className="prose-content" style={{ marginBottom: '2.5rem' }}>
         <ReactMarkdown 
           remarkPlugins={[remarkGfm, remarkMath]} 
           rehypePlugins={[rehypeKatex, rehypeRaw]}
@@ -181,53 +158,31 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
       </div>
 
       {q.subQuestions && q.subQuestions.length > 0 ? (
-        <div className="q-subparts" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="q-subparts" style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {q.subQuestions.map((sq: any, i: number) => (
             <SubQuestionItem key={i} sq={sq} hideIndividualButtons={hideIndividualButtons} forceShowAnswer={forceShowAnswer} />
           ))}
         </div>
       ) : (
         /* If no subquestions, show a main answer input and button */
-        <div style={{ marginTop: '1.5rem' }}>
+        <div style={{ marginTop: '2rem' }}>
           <textarea 
             placeholder="Type your answer here..."
+            className="answer-textarea"
             value={topUserAnswer}
             onChange={(e) => setTopUserAnswer(e.target.value)}
-            style={{
-              width: '100%',
-              background: 'rgba(0,0,0,0.3)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '0.5rem',
-              padding: '0.75rem',
-              color: 'white',
-              fontSize: '0.9rem',
-              minHeight: '100px',
-              resize: 'vertical',
-              outline: 'none',
-              fontFamily: 'inherit'
-            }}
           />
           {!hideIndividualButtons && (
-            <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <button 
                 onClick={() => setShowTopAnswer(!showTopAnswer)}
-                style={{
-                  background: showTopAnswer ? 'rgba(255,255,255,0.1)' : 'var(--primary)',
-                  color: 'white',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  fontSize: '0.8rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
+                className={`complete-btn ${showTopAnswer ? 'active' : ''}`}
               >
                 {showTopAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
               </button>
               
               {q.marks && q.marks > 0 && (
-                <div style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 'bold' }}>
+                <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: '800' }}>
                   [{q.marks} Marks]
                 </div>
               )}
@@ -235,23 +190,23 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
           )}
           
           {isVisible && q.answer && (
-            <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(34, 197, 94, 0.08)', borderLeft: '3px solid #4ade80', borderRadius: '0.375rem' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#4ade80', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.4rem' }}>Official Answer</span>
-            <div className="q-content" style={{ color: '#f8fafc', fontSize: '0.95rem', lineHeight: '1.6' }}>
-              <ReactMarkdown 
-                remarkPlugins={[remarkGfm, remarkMath]} 
-                rehypePlugins={[rehypeKatex, rehypeRaw]}
-              >
-                {preprocessMarkdown(q.answer)}
-              </ReactMarkdown>
-            </div>
+            <div className="official-answer-box">
+              <span className="answer-label">Official Answer</span>
+              <div className="prose-content" style={{ fontSize: '1.05rem' }}>
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm, remarkMath]} 
+                  rehypePlugins={[rehypeKatex, rehypeRaw]}
+                >
+                  {preprocessMarkdown(q.answer)}
+                </ReactMarkdown>
+              </div>
             </div>
           )}
         </div>
       )}
 
       {q.subQuestions && q.subQuestions.length > 0 && q.marks > 0 && (
-        <div style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'right', fontWeight: 'bold' }}>
+        <div style={{ marginTop: '2.5rem', fontSize: '1rem', color: 'var(--text-muted)', textAlign: 'right', fontWeight: '800' }}>
           [Total: {q.marks} Marks]
         </div>
       )}
