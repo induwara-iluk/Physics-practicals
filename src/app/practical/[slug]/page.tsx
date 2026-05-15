@@ -33,43 +33,8 @@ export default async function PracticalPage({ params }: { params: { slug: string
           </svg>
           <h1>Experiment Not Found</h1>
           <p>The practical you are looking for might have been moved or doesn't exist in our laboratory yet.</p>
-          <Link href="/" className="back-btn">Back to Laboratory</Link>
+          <Link href="/" className="error-back-btn">Back to Laboratory</Link>
         </div>
-        <style jsx>{`
-          .error-page {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            background: #0a0a0f;
-          }
-          .error-card {
-            padding: 4rem 2rem;
-            text-align: center;
-            border-radius: 2rem;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-          }
-          .error-card svg { color: rgba(255,255,255,0.2); }
-          .error-card h1 { font-size: 1.5rem; font-weight: 800; color: white; }
-          .error-card p { color: rgba(255,255,255,0.5); line-height: 1.6; }
-          .back-btn {
-            background: white;
-            color: black;
-            padding: 0.75rem 2rem;
-            border-radius: 1rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s;
-          }
-          .back-btn:hover { transform: scale(1.05); }
-        `}</style>
       </div>
     );
   }
@@ -94,5 +59,6 @@ export default async function PracticalPage({ params }: { params: { slug: string
 
         <PracticalClient practical={practical} />
       </div>
+    </div>
   );
 }

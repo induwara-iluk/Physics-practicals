@@ -139,7 +139,7 @@ export default function DashboardClient({ initialPracticals }: { initialPractica
             filteredPracticals.map((p) => {
               const titleOnly = p.title.replace(/^\d+\.\s*/, '');
               const hasImage = p.diagrams && p.diagrams.length > 0;
-              const imgSrc = hasImage ? p.diagrams[0] : null;
+              const imgSrc = hasImage ? p.diagrams[0] : undefined;
               const isCompleted = completedSlugs.includes(p.slug);
               const pNum = p.practicalNumber || 'N/A';
 

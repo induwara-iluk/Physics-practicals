@@ -641,3 +641,40 @@
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Error Page Styles */
+.error-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg-dark);
+}
+.error-card {
+  padding: 4rem 2rem;
+  text-align: center;
+  border-radius: 2rem;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: white;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.error-card svg { color: var(--text-muted); opacity: 0.3; }
+.error-card h1 { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+.error-card p { color: var(--text-muted); line-height: 1.6; }
+.error-back-btn {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 2.5rem;
+  border-radius: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+.error-back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3); }
