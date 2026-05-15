@@ -29,7 +29,7 @@ const PracticalSchema: Schema = new Schema({
   importantPoints: [{ type: String }],
   diagrams: [{ type: String }], // URLs or paths to diagrams
   medium: { type: String, enum: ['English', 'Sinhala'], default: 'English' },
-  practicalNumber: { type: Number },
+  practicalNumber: { type: String },
   difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Medium' },
   estimatedTime: { type: String, default: '45 mins' },
 }, { timestamps: true });

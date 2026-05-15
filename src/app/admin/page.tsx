@@ -6,7 +6,7 @@ import ImageUploadButton from '@/components/ImageUploadButton';
 import MarkdownPreview from '@/components/MarkdownPreview';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState<'practicals' | 'questions'>('practicals');
+  const [activeTab, setActiveTab] = useState<'practicals' | 'questions' | 'history'>('practicals');
 
   // Practical State
   const [dbPracticals, setDbPracticals] = useState<any[]>([]);
@@ -15,6 +15,10 @@ export default function AdminPage() {
   // Question State
   const [dbQuestions, setDbQuestions] = useState<any[]>([]);
   const [selectedQuestionId, setSelectedQuestionId] = useState<string>('new');
+
+  // History State
+  const [dbHistory, setDbHistory] = useState<any[]>([]);
+  const [historyForm, setHistoryForm] = useState({ year: new Date().getFullYear(), q1: '', q2: '', q3: '', q4: '' });
   
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -52,6 +56,11 @@ export default function AdminPage() {
         }
       })
       .catch(err => console.error('Error fetching questions for admin:', err));
+    fetch('/api/admin/history')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setDbHistory(data);
+      });
   }, []);
 
   // Load practical data when a new one is selected
@@ -134,6 +143,28 @@ export default function AdminPage() {
     }
   };
 
+  const handleHistorySave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setMessage('');
+    try {
+      const res = await fetch('/api/admin/history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(historyForm)
+      });
+      if (res.ok) {
+        setMessage('✅ History saved!');
+        const data = await fetch('/api/admin/history').then(r => r.json());
+        if (Array.isArray(data)) setDbHistory(data);
+      }
+    } catch (err) {
+      setMessage('❌ Error saving history');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const insertAtCursor = (field: 'theory' | 'method', text: string) => {
     const textarea = document.getElementById(field) as HTMLTextAreaElement;
     if (!textarea) return;
@@ -173,6 +204,12 @@ export default function AdminPage() {
             >
               Questions
             </button>
+            <button 
+              className={`tab-btn ${activeTab === 'history' ? 'active' : ''}`}
+              onClick={() => setActiveTab('history')}
+            >
+              Paper History
+            </button>
           </div>
         </header>
 
@@ -207,7 +244,7 @@ export default function AdminPage() {
                   </ul>
                 </div>
               </>
-            ) : (
+            ) : activeTab === 'questions' ? (
               <>
                 <h3>Select a Question</h3>
                 <select 
@@ -227,6 +264,8 @@ export default function AdminPage() {
                   })}
                 </select>
               </>
+            ) : (
+              <div className="instructions"><h3>Paper History</h3><p>Manage past paper question history.</p></div>
             )}
           </div>
 
@@ -374,7 +413,7 @@ export default function AdminPage() {
                   </div>
                 </form>
               )
-            ) : (
+            ) : activeTab === 'questions' ? (
               // QUESTIONS FORM
               <AdminQuestionForm 
                 selectedQuestionId={selectedQuestionId} 
@@ -388,6 +427,48 @@ export default function AdminPage() {
                     });
                 }} 
               />
+            ) : (
+              // HISTORY TAB
+              <div className="history-admin">
+                <div className="form-header">
+                  <h2>Edit Paper History</h2>
+                  {message && <div className="status-message">{message}</div>}
+                </div>
+                
+                <form onSubmit={handleHistorySave} className="history-form">
+                  <div className="form-row">
+                    <div className="form-group"><label>Year</label><input type="number" value={historyForm.year} onChange={e=>setHistoryForm({...historyForm, year: parseInt(e.target.value)})} className="title-input"/></div>
+                    <div className="form-group"><label>Q1</label><input type="text" value={historyForm.q1} onChange={e=>setHistoryForm({...historyForm, q1: e.target.value})} className="title-input"/></div>
+                    <div className="form-group"><label>Q2</label><input type="text" value={historyForm.q2} onChange={e=>setHistoryForm({...historyForm, q2: e.target.value})} className="title-input"/></div>
+                    <div className="form-group"><label>Q3</label><input type="text" value={historyForm.q3} onChange={e=>setHistoryForm({...historyForm, q3: e.target.value})} className="title-input"/></div>
+                    <div className="form-group"><label>Q4</label><input type="text" value={historyForm.q4} onChange={e=>setHistoryForm({...historyForm, q4: e.target.value})} className="title-input"/></div>
+                  </div>
+                  <button type="submit" className="save-btn" disabled={saving}>Save Entry</button>
+                </form>
+
+                <div className="history-list mt-12">
+                  <h3>Existing Entries</h3>
+                  <div className="history-table-wrapper">
+                    <table className="admin-table">
+                      <thead>
+                        <tr><th>Year</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Actions</th></tr>
+                      </thead>
+                      <tbody>
+                        {dbHistory.map(h => (
+                          <tr key={h._id}>
+                            <td>{h.year}</td>
+                            <td>{h.q1}</td>
+                            <td>{h.q2}</td>
+                            <td>{h.q3}</td>
+                            <td>{h.q4}</td>
+                            <td><button onClick={() => setHistoryForm({year: h.year, q1: h.q1, q2: h.q2, q3: h.q3, q4: h.q4})} className="edit-mini-btn">Edit</button></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -643,6 +724,13 @@ export default function AdminPage() {
           opacity: 0.5;
           cursor: not-allowed;
         }
+        
+        .mt-12 { margin-top: 3rem; }
+        .edit-mini-btn { background: #f1f5f9; border: 1px solid var(--border); padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.8rem; cursor: pointer; }
+        .edit-mini-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .admin-table th, .admin-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .admin-table th { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); }
       `}</style>
     </div>
   );

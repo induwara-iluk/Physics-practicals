@@ -40,6 +40,10 @@ const Navbar = () => {
             <Link href="/practice-papers" className={`nav-btn featured ${pathname === '/practice-papers' ? 'active' : ''}`}>
               <span>Papers</span>
             </Link>
+
+            <Link href="/question-history" className={`nav-btn ${pathname === '/question-history' ? 'active' : ''}`}>
+              <span>History</span>
+            </Link>
           </div>
 
           {/* Actions */}
