@@ -8,7 +8,7 @@ export async function GET() {
   try {
     await dbConnect();
     // Fetch all practicals, selecting necessary fields for the list view including diagrams
-    const practicals = await Practical.find({}).select('title slug category shortText diagrams medium').lean();
+    const practicals = await Practical.find({}).select('title slug category shortText diagrams medium practicalNumber difficulty estimatedTime').lean();
     return NextResponse.json(practicals);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

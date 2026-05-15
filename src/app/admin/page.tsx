@@ -27,6 +27,9 @@ export default function AdminPage() {
   const [importantPoints, setImportantPoints] = useState('');
   const [diagrams, setDiagrams] = useState('');
   const [medium, setMedium] = useState<'English' | 'Sinhala'>('English');
+  const [practicalNumber, setPracticalNumber] = useState<string>('');
+  const [difficulty, setDifficulty] = useState<'Easy' | 'Medium' | 'Hard'>('Medium');
+  const [estimatedTime, setEstimatedTime] = useState<string>('45 mins');
 
 
   // Fetch all practicals & questions for the sidebar
@@ -69,6 +72,9 @@ export default function AdminPage() {
           setImportantPoints(data.importantPoints ? data.importantPoints.join('\n') : '');
           setDiagrams(data.diagrams ? data.diagrams.join('\n') : '');
           setMedium(data.medium || 'English');
+          setPracticalNumber(data.practicalNumber?.toString() || '');
+          setDifficulty(data.difficulty || 'Medium');
+          setEstimatedTime(data.estimatedTime || '45 mins');
           
           if (data.warning) {
             setMessage('⚠️ ' + data.warning);
@@ -103,6 +109,9 @@ export default function AdminPage() {
         importantPoints: importantPoints.split('\n').filter(s => s.trim()),
         diagrams: diagrams.split('\n').filter(s => s.trim()),
         medium,
+        practicalNumber: practicalNumber ? parseInt(practicalNumber) : undefined,
+        difficulty,
+        estimatedTime,
       };
       
       const res = await fetch(`/api/admin/practicals/${selectedSlug}`, {
@@ -258,9 +267,54 @@ export default function AdminPage() {
                     </select>
                   </div>
 
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Practical Number</label>
+                      <input 
+                        type="number" 
+                        value={practicalNumber} 
+                        onChange={e => setPracticalNumber(e.target.value)} 
+                        className="title-input"
+                        placeholder="e.g. 1"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Difficulty</label>
+                      <select 
+                        value={difficulty} 
+                        onChange={e => setDifficulty(e.target.value as any)} 
+                        className="title-input"
+                      >
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Est. Time</label>
+                      <input 
+                        type="text" 
+                        value={estimatedTime} 
+                        onChange={e => setEstimatedTime(e.target.value)} 
+                        className="title-input"
+                        placeholder="e.g. 45 mins"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Required Apparatus (One per line or comma separated)</label>
+                    <textarea 
+                      value={apparatus} 
+                      onChange={e => setApparatus(e.target.value)} 
+                      rows={4}
+                      placeholder="e.g.&#10;Vernier Calliper&#10;Beaker&#10;Water"
+                    />
+                  </div>
+
                   <div className="form-group">
                     <div className="label-with-action">
-                      <label htmlFor="theory">Theory (Markdown/Text)</label>
+                      <label htmlFor="theory">Scientific Theory (Markdown/Text)</label>
                       <ImageUploadButton 
                         onImageUploaded={(url) => insertAtCursor('theory', `\n\n![Image](${url})\n\n`)} 
                       />
@@ -269,14 +323,14 @@ export default function AdminPage() {
                       id="theory"
                       value={theory} 
                       onChange={e => setTheory(e.target.value)} 
-                      rows={6}
+                      rows={8}
                       placeholder="Enter scientific theory here..."
                     />
                   </div>
 
                   <div className="form-group">
                     <div className="label-with-action">
-                      <label htmlFor="method">Experimental Method & Setup</label>
+                      <label htmlFor="method">Experimental Method & Setup (Steps)</label>
                       <ImageUploadButton 
                         onImageUploaded={(url) => insertAtCursor('method', `\n\n![Image](${url})\n\n`)} 
                       />
@@ -285,31 +339,19 @@ export default function AdminPage() {
                       id="method"
                       value={method} 
                       onChange={e => setMethod(e.target.value)} 
-                      rows={8}
+                      rows={10}
                       placeholder="Enter step-by-step method and setup instructions here..."
                     />
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Required Apparatus (One per line)</label>
-                      <textarea 
-                        value={apparatus} 
-                        onChange={e => setApparatus(e.target.value)} 
-                        rows={5}
-                        placeholder="e.g.&#10;Vernier Calliper&#10;Beaker&#10;Water"
-                      />
-                    </div>
-                    
-                    <div className="form-group">
-                      <label>Important Points (One per line)</label>
-                      <textarea 
-                        value={importantPoints} 
-                        onChange={e => setImportantPoints(e.target.value)} 
-                        rows={5}
-                        placeholder="Enter crucial marking points..."
-                      />
-                    </div>
+                  <div className="form-group">
+                    <label>Important Points (One per line - supports Markdown/LaTeX)</label>
+                    <textarea 
+                      value={importantPoints} 
+                      onChange={e => setImportantPoints(e.target.value)} 
+                      rows={5}
+                      placeholder="Enter crucial marking points..."
+                    />
                   </div>
 
                   <div className="form-group">
@@ -368,8 +410,9 @@ export default function AdminPage() {
 
         .admin-header h1 {
           font-size: 2.5rem;
-          color: white;
+          color: var(--text);
           margin-bottom: 0.5rem;
+          font-weight: 800;
         }
 
         .admin-header p {
@@ -383,27 +426,28 @@ export default function AdminPage() {
         }
 
         .tab-btn {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: white;
+          border: 1px solid var(--border);
           color: var(--text-muted);
-          padding: 0.5rem 1.5rem;
-          border-radius: 0.5rem;
+          padding: 0.6rem 1.75rem;
+          border-radius: 0.75rem;
           font-family: inherit;
           font-size: 0.95rem;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
           transition: all 0.2s;
         }
 
         .tab-btn:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
+          background: #f1f5f9;
+          color: var(--text);
         }
 
         .tab-btn.active {
           background: var(--primary);
           color: white;
           border-color: var(--primary);
+          box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
         }
 
         .admin-content {
@@ -420,32 +464,35 @@ export default function AdminPage() {
 
         .sidebar {
           padding: 1.5rem;
-          border-radius: 1rem;
+          border-radius: 1.5rem;
           height: fit-content;
+          background: white;
+          border: 1px solid var(--border);
         }
 
         .sidebar h3 {
           font-size: 1.1rem;
-          color: white;
+          color: var(--text);
           margin-bottom: 1rem;
+          font-weight: 700;
         }
 
         .practical-select {
           width: 100%;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: white;
-          padding: 0.5rem;
-          border-radius: 0.5rem;
+          background: #f8fafc;
+          border: 1px solid var(--border);
+          color: var(--text);
+          padding: 0.75rem;
+          border-radius: 0.75rem;
           font-family: inherit;
           font-size: 0.85rem;
           outline: none;
         }
         
         .practical-select option {
-          background: var(--bg-dark);
-          padding: 0.5rem;
-          color: var(--text-muted);
+          background: white;
+          padding: 0.75rem;
+          color: var(--text);
         }
         
         .practical-select option:checked {
@@ -455,21 +502,24 @@ export default function AdminPage() {
 
         .instructions {
           margin-top: 1.5rem;
-          font-size: 0.8rem;
-          color: var(--text-muted);
-          background: rgba(0,0,0,0.2);
-          padding: 1rem;
-          border-radius: 0.5rem;
+          font-size: 0.85rem;
+          color: #475569;
+          background: #f1f5f9;
+          padding: 1.25rem;
+          border-radius: 1rem;
         }
         
         .instructions ul {
-          padding-left: 1rem;
+          padding-left: 1.25rem;
           margin-top: 0.5rem;
         }
 
         .main-form {
-          padding: 2rem;
-          border-radius: 1rem;
+          padding: 2.5rem;
+          border-radius: 1.5rem;
+          background: white;
+          border: 1px solid var(--border);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
         .empty-state, .loading {
@@ -480,29 +530,32 @@ export default function AdminPage() {
         }
 
         .form-header {
-          margin-bottom: 2rem;
+          margin-bottom: 2.5rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 1rem;
         }
 
         .form-header h2 {
           font-size: 1.5rem;
-          color: white;
+          color: var(--text);
+          font-weight: 700;
         }
 
         .status-message {
           padding: 0.5rem 1rem;
-          background: rgba(34, 197, 94, 0.1);
-          color: #4ade80;
-          border: 1px solid rgba(34, 197, 94, 0.2);
+          background: #ecfdf5;
+          color: #059669;
+          border: 1px solid #d1fae5;
           border-radius: 0.5rem;
           font-size: 0.9rem;
-          font-weight: 500;
+          font-weight: 600;
         }
 
         .form-group {
-          margin-bottom: 1.5rem;
+          margin-bottom: 2rem;
           display: flex;
           flex-direction: column;
           gap: 0.5rem;
@@ -510,26 +563,28 @@ export default function AdminPage() {
 
         .form-row {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 2rem;
         }
 
         label {
           font-size: 0.9rem;
-          font-weight: 600;
+          font-weight: 700;
           color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.025em;
         }
 
         textarea, .title-input {
           width: 100%;
-          background: rgba(0, 0, 0, 0.2);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 0.5rem;
+          background: #f8fafc;
+          border: 1px solid var(--border);
+          border-radius: 0.75rem;
           padding: 1rem;
-          color: white;
+          color: var(--text);
           font-family: inherit;
-          font-size: 0.95rem;
-          transition: border-color 0.2s;
+          font-size: 1rem;
+          transition: all 0.2s;
         }
 
         textarea {
@@ -539,6 +594,8 @@ export default function AdminPage() {
         textarea:focus, .title-input:focus {
           outline: none;
           border-color: var(--primary);
+          background: white;
+          box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
         }
 
         .label-with-action {
@@ -553,32 +610,34 @@ export default function AdminPage() {
         }
 
         .form-actions {
-          margin-top: 2rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--border);
           display: flex;
           justify-content: flex-end;
         }
 
         .save-btn {
-          background: white;
-          color: black;
+          background: var(--primary);
+          color: white;
           border: none;
-          padding: 0.75rem 2rem;
-          border-radius: 0.5rem;
-          font-weight: 700;
+          padding: 1rem 3rem;
+          border-radius: 1rem;
+          font-weight: 800;
           font-size: 1rem;
           cursor: pointer;
           transition: all 0.2s;
+          box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
         }
 
         .save-btn:hover:not(:disabled) {
-          background: #e2e8f0;
           transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+          background: #4338ca;
         }
 
         .save-btn:disabled {
-          opacity: 0.7;
+          opacity: 0.5;
           cursor: not-allowed;
         }
       `}</style>

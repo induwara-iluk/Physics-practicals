@@ -297,26 +297,28 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
 
       <style jsx>{`
         .q-form { display: flex; flex-direction: column; gap: 1rem; }
-        .q-fieldset { border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 1.5rem; margin-top: 1rem; }
-        .q-fieldset legend { font-weight: bold; padding: 0 0.5rem; color: var(--primary); }
-        .sub-item { background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+        .q-fieldset { border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-top: 1rem; background: #f8fafc; }
+        .q-fieldset legend { font-weight: 800; padding: 0 0.75rem; color: var(--primary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
+        .sub-item { background: white; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .upload-row { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; }
-        .preview-img { height: 40px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); }
-        .add-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; cursor: pointer; }
-        .add-btn:hover { background: rgba(255,255,255,0.2); }
-        .remove-btn { background: rgba(239,68,68,0.2); color: #f87171; border: none; padding: 0.25rem 0.5rem; border-radius: 0.25rem; cursor: pointer; margin-top: 0.5rem; font-size: 0.8rem; }
-        .remove-btn:hover { background: rgba(239,68,68,0.3); }
+        .preview-img { height: 60px; border-radius: 8px; border: 1px solid var(--border); }
+        .add-btn { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); padding: 0.75rem 1.5rem; border-radius: 0.75rem; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+        .add-btn:hover { background: white; border-color: var(--primary); color: var(--primary); }
+        .remove-btn { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer; margin-top: 1rem; font-size: 0.85rem; font-weight: 700; }
+        .remove-btn:hover { background: #ffe4e6; }
         /* Reuse inputs from parent */
-        .title-input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.75rem; color: white; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-        .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .status-message { padding: 0.5rem 1rem; background: rgba(34,197,94,0.1); color: #4ade80; border-radius: 0.5rem; }
-          .save-btn { background: white; color: black; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; }
-          .editor-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start; }
-          @media (max-width: 1024px) {
-            .editor-layout { grid-template-columns: 1fr; }
-          }
+        .title-input { width: 100%; background: white; border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem 1rem; color: var(--text); font-size: 1rem; transition: all 0.2s; }
+        .title-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
+        .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+        .status-message { padding: 0.5rem 1rem; background: #ecfdf5; color: #059669; border-radius: 0.5rem; font-weight: 600; border: 1px solid #d1fae5; }
+        .save-btn { background: var(--primary); color: white; border: none; padding: 1rem 3rem; border-radius: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2); transition: all 0.2s; }
+        .save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3); background: #4338ca; }
+        .editor-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem; align-items: start; }
+        @media (max-width: 1024px) {
+          .editor-layout { grid-template-columns: 1fr; }
+        }
         `}</style>
       </form>
       </div>

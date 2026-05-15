@@ -11,6 +11,9 @@ export interface IPractical extends Document {
   importantPoints: string[];
   diagrams: string[];
   medium: 'English' | 'Sinhala';
+  practicalNumber?: number;
+  difficulty?: 'Easy' | 'Medium' | 'Hard';
+  estimatedTime?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,6 +29,9 @@ const PracticalSchema: Schema = new Schema({
   importantPoints: [{ type: String }],
   diagrams: [{ type: String }], // URLs or paths to diagrams
   medium: { type: String, enum: ['English', 'Sinhala'], default: 'English' },
+  practicalNumber: { type: Number },
+  difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Medium' },
+  estimatedTime: { type: String, default: '45 mins' },
 }, { timestamps: true });
 
 export default mongoose.models.Practical || mongoose.model<IPractical>('Practical', PracticalSchema);

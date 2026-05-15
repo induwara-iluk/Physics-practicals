@@ -113,17 +113,16 @@ const Navbar = () => {
           gap: 1.5rem;
           padding: 0.85rem 1.5rem;
 
-          background: rgba(10, 12, 24, 0.75);
-          backdrop-filter: blur(24px) saturate(180%);
-          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(20px) saturate(180%);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
 
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(0, 0, 0, 0.05);
           border-radius: 1.5rem;
 
           box-shadow:
-            0 10px 30px rgba(0, 0, 0, 0.45),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 0 40px rgba(124, 110, 242, 0.08);
+            0 10px 25px rgba(0, 0, 0, 0.03),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         /* ================================
@@ -134,7 +133,7 @@ const Navbar = () => {
           align-items: center;
           gap: 0.9rem;
           text-decoration: none;
-          color: white;
+          color: var(--text);
           flex-shrink: 0;
         }
 
@@ -147,29 +146,8 @@ const Navbar = () => {
           align-items: center;
           justify-content: center;
 
-          background:
-            linear-gradient(135deg,
-              rgba(124, 110, 242, 1),
-              rgba(72, 210, 255, 1)
-            );
-
-          box-shadow:
-            0 10px 25px rgba(124, 110, 242, 0.45),
-            inset 0 1px 2px rgba(255, 255, 255, 0.3);
-        }
-
-        .logo-box::before {
-          content: '';
-          position: absolute;
-          inset: 1px;
-          border-radius: inherit;
-          background:
-            linear-gradient(
-              180deg,
-              rgba(255, 255, 255, 0.25),
-              rgba(255, 255, 255, 0.02)
-            );
-          opacity: 0.8;
+          background: var(--primary);
+          box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
         }
 
         .logo-symbol {
@@ -178,7 +156,6 @@ const Navbar = () => {
           font-size: 1.35rem;
           font-weight: 800;
           color: white;
-          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
         }
 
         .logo-content {
@@ -191,11 +168,11 @@ const Navbar = () => {
           font-size: 1rem;
           font-weight: 800;
           letter-spacing: 0.08em;
-          color: #ffffff;
+          color: var(--text);
         }
 
         .logo-dim {
-          color: rgba(255, 255, 255, 0.45);
+          color: var(--text-muted);
           font-weight: 500;
         }
 
@@ -205,7 +182,7 @@ const Navbar = () => {
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #8fd8ff;
+          color: var(--primary);
         }
 
         /* ================================
@@ -226,7 +203,7 @@ const Navbar = () => {
           padding: 0.65rem 1.25rem;
           border-radius: 0.75rem;
 
-          color: rgba(255, 255, 255, 0.45);
+          color: var(--text-muted);
           text-decoration: none;
           font-size: 0.8rem;
           font-weight: 700;
@@ -234,34 +211,31 @@ const Navbar = () => {
           text-transform: uppercase;
 
           border: 1px solid transparent;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.2s;
         }
 
         .nav-btn:hover {
-          color: white;
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(255, 255, 255, 0.08);
-          transform: translateY(-1px);
+          color: var(--primary);
+          background: rgba(79, 70, 229, 0.05);
         }
 
         .nav-btn.active {
-          color: white;
-          background: rgba(124, 110, 242, 0.12);
-          border-color: rgba(124, 110, 242, 0.2);
+          color: var(--primary);
+          background: rgba(79, 70, 229, 0.08);
+          border-color: rgba(79, 70, 229, 0.1);
         }
 
         /* Featured Button - Papers */
         .nav-btn.featured {
-          background: rgba(255, 255, 255, 0.03);
-          border-color: rgba(255, 255, 255, 0.1);
+          background: var(--primary);
           color: white;
+          box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
         }
 
         .nav-btn.featured:hover {
-          background: rgba(255, 255, 255, 0.08);
-          border-color: rgba(255, 255, 255, 0.15);
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+          background: #4338ca;
         }
 
         /* ================================
@@ -281,21 +255,20 @@ const Navbar = () => {
           height: 2.8rem;
           border-radius: 999px;
 
-          color: rgba(255, 255, 255, 0.45);
+          color: var(--text-muted);
           text-decoration: none;
 
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--border);
+          background: white;
 
           transition: all 0.3s ease;
         }
 
         .admin-trigger:hover {
-          color: white;
-          background: rgba(124, 110, 242, 0.12);
-          border-color: rgba(124, 110, 242, 0.25);
-          transform: rotate(45deg) scale(1.05);
-          box-shadow: 0 8px 20px rgba(124, 110, 242, 0.18);
+          color: var(--primary);
+          border-color: var(--primary);
+          transform: rotate(45deg);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         /* ================================
