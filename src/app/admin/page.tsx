@@ -4,27 +4,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import AdminQuestionForm from '@/components/AdminQuestionForm';
 import ImageUploadButton from '@/components/ImageUploadButton';
 import MarkdownPreview from '@/components/MarkdownPreview';
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'practicals' | 'questions' | 'history'>('practicals');
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const router = useRouter();
+  const supabase = createClient();
 
-  // Practical State
   const [dbPracticals, setDbPracticals] = useState<any[]>([]);
   const [selectedSlug, setSelectedSlug] = useState<string>('');
-  
-  // Question State
   const [dbQuestions, setDbQuestions] = useState<any[]>([]);
   const [selectedQuestionId, setSelectedQuestionId] = useState<string>('new');
-
-  // History State
   const [dbHistory, setDbHistory] = useState<any[]>([]);
   const [historyForm, setHistoryForm] = useState({ year: new Date().getFullYear(), q1: '', q2: '', q3: '', q4: '' });
-  
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
-
-  // Form State (Practicals)
   const [title, setTitle] = useState('');
   const [theory, setTheory] = useState('');
   const [method, setMethod] = useState('');
@@ -36,9 +33,10 @@ export default function AdminPage() {
   const [difficulty, setDifficulty] = useState<'Easy' | 'Medium' | 'Hard'>('Medium');
   const [estimatedTime, setEstimatedTime] = useState<string>('45 mins');
 
-
   // Fetch all practicals & questions for the sidebar
   useEffect(() => {
+    if (!isAuthorized) return;
+    
     fetch('/api/practicals')
       .then(res => res.json())
       .then(data => {
@@ -56,16 +54,17 @@ export default function AdminPage() {
         }
       })
       .catch(err => console.error('Error fetching questions for admin:', err));
+      
     fetch('/api/admin/history')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setDbHistory(data);
       });
-  }, []);
+  }, [isAuthorized]);
 
   // Load practical data when a new one is selected
   useEffect(() => {
-    if (!selectedSlug) return;
+    if (!selectedSlug || !isAuthorized) return;
     
     const fetchPractical = async () => {
       setLoading(true);
@@ -100,7 +99,22 @@ export default function AdminPage() {
     };
     
     fetchPractical();
-  }, [selectedSlug]);
+  }, [selectedSlug, isAuthorized]);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || user.app_metadata?.role !== 'admin') {
+        router.push('/');
+      } else {
+        setIsAuthorized(true);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (isAuthorized === null) return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#64748b' }}>Verifying authorization...</div>;
+  if (!isAuthorized) return null;
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
