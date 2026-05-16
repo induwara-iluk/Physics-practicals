@@ -1,14 +1,35 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const Navbar = () => {
   const pathname = usePathname();
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== 'undefined') {
+        if (window.scrollY > lastScrollY && window.scrollY > 100) { // scrolling down
+          setIsVisible(false);
+        } else { // scrolling up
+          setIsVisible(true);
+        }
+        setLastScrollY(window.scrollY);
+      }
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, [lastScrollY]);
 
   return (
     <>
-      <nav className="navbar">
+      <nav className={`navbar ${isVisible ? '' : 'nav-hidden'}`}>
         {/* Ambient glow */}
         <div className="navbar-glow" />
 
@@ -44,6 +65,10 @@ const Navbar = () => {
             <Link href="/question-history" className={`nav-btn ${pathname === '/question-history' ? 'active' : ''}`}>
               <span>History</span>
             </Link>
+
+            <Link href="/about" className={`nav-btn ${pathname === '/about' ? 'active' : ''}`}>
+              <span>About</span>
+            </Link>
           </div>
 
           {/* Actions */}
@@ -77,6 +102,11 @@ const Navbar = () => {
           z-index: 1000;
           padding: 1rem 1.25rem 0;
           pointer-events: none;
+          transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.nav-hidden {
+          transform: translateY(-100%);
         }
 
         .nav-container,

@@ -3,6 +3,7 @@ import "./globals.css";
 import "./components.css";
 import "katex/dist/katex.min.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({
         {ga_id && <GoogleAnalytics ga_id={ga_id} />}
         <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

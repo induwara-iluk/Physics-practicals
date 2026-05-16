@@ -102,7 +102,7 @@ export default function DashboardClient({ initialPracticals }: { initialPractica
       </aside>
 
       {/* List */}
-      <main className="list-panel animate-up" style={{ animationDelay: '0.25s' }}>
+      <main className="list-panel animate-up" id="practicals-list" style={{ animationDelay: '0.25s' }}>
         <div className="panel-search" style={{ marginBottom: '1.5rem' }}>
           <div className="search-box">
             <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

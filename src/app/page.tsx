@@ -4,8 +4,30 @@ import Practical from '@/models/Practical';
 import DashboardClient from '@/components/DashboardClient';
 import PracticalSkeleton from '@/components/PracticalSkeleton';
 
+import Hero from '@/components/Hero';
+
+import Question from '@/models/Question';
+
 // Force dynamic to ensure we get fresh data from DB on every request
 export const dynamic = 'force-dynamic';
+
+async function getStats() {
+  try {
+    await dbConnect();
+    const practicalCount = await Practical.countDocuments();
+    const pastPaperCount = await Question.countDocuments({ "source.type": "past_paper" });
+    const modelQuestionCount = await Question.countDocuments({ "source.type": { $ne: "past_paper" } });
+    
+    return {
+      practicalCount,
+      pastPaperCount,
+      modelQuestionCount
+    };
+  } catch (error) {
+    console.error('Failed to fetch stats:', error);
+    return { practicalCount: 20, pastPaperCount: 50, modelQuestionCount: 30 }; // Fallbacks
+  }
+}
 
 async function getPracticals() {
   try {
@@ -24,25 +46,20 @@ async function getPracticals() {
 
 export default async function LandingPage() {
   const practicals = await getPracticals();
+  const stats = await getStats();
 
   return (
     <div className="page-wrapper">
       <div className="noise-overlay" />
       <div className="bg-radial" />
 
-      <div className="main-container">
-        <div style={{ height: '6rem' }}></div>
+      <Hero 
+        practicalCount={stats.practicalCount}
+        pastPaperCount={stats.pastPaperCount}
+        modelQuestionCount={stats.modelQuestionCount}
+      />
 
-        <header className="header animate-fade">
-          <div className="badge">
-            <span className="badge-dot"></span>
-            Advanced Physics
-          </div>
-          <h1 className="title">Virtual Physics Laboratory</h1>
-          <p className="subtitle">
-            Explore interactive experiments, master complex theories, and prepare for your examinations with our comprehensive practical guide.
-          </p>
-        </header>
+      <div className="main-container">
 
         {!practicals ? (
           <div className="error-state glass">

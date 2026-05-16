@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const PracticalLink = ({ practical, number }: { practical?: any, number: string }) => {
   if (!number) return <span className="empty-dash">-</span>;
-  
+
   if (!practical) {
     return <span className="unlinked-number">#{number}</span>;
   }
@@ -37,8 +37,9 @@ export default function QuestionHistoryPage() {
       <div className="main-container" style={{ maxWidth: '1000px', padding: '1rem' }}>
         <header className="hero-section mb-6" style={{ textAlign: 'center' }}>
           <h1 className="hero-title" style={{ fontSize: '2rem' }}>Exam History</h1>
-          <p className="subtitle" style={{ fontSize: '0.9rem' }}>
-            Structured Essay Questions (G.C.E. A/L)
+          <p className="subtitle" style={{ fontSize: '1rem', textAlign: 'center' }}>
+
+            Past Structured Essay Questions (G.C.E. A/L) from 2011 to 2025 with 2026 year question guessings
           </p>
         </header>
 
