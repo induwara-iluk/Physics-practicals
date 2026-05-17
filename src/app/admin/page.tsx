@@ -179,17 +179,23 @@ export default function AdminPage() {
     }
   };
 
-  const insertAtCursor = (field: 'theory' | 'method', text: string) => {
+  const insertAtCursor = (field: 'theory' | 'method' | 'importantPoints', text: string) => {
     const textarea = document.getElementById(field) as HTMLTextAreaElement;
     if (!textarea) return;
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    const currentVal = field === 'theory' ? theory : method;
+    
+    let currentVal = '';
+    if (field === 'theory') currentVal = theory;
+    else if (field === 'method') currentVal = method;
+    else if (field === 'importantPoints') currentVal = importantPoints;
+
     const newVal = currentVal.substring(0, start) + text + currentVal.substring(end);
     
     if (field === 'theory') setTheory(newVal);
-    else setMethod(newVal);
+    else if (field === 'method') setMethod(newVal);
+    else if (field === 'importantPoints') setImportantPoints(newVal);
 
     // Reset cursor position after state update
     setTimeout(() => {
@@ -380,6 +386,7 @@ export default function AdminPage() {
                       rows={8}
                       placeholder="Enter scientific theory here..."
                     />
+                    <MarkdownPreview content={theory} label="Theory" />
                   </div>
 
                   <div className="form-group">
@@ -400,8 +407,14 @@ export default function AdminPage() {
                   </div>
 
                   <div className="form-group">
-                    <label>Important Points (Markdown/LaTeX supported, One per line)</label>
+                    <div className="label-with-action">
+                      <label htmlFor="importantPoints">Important Points (Markdown/LaTeX supported, One per line)</label>
+                      <ImageUploadButton 
+                        onImageUploaded={(url) => insertAtCursor('importantPoints', `\n\n![Image](${url})\n\n`)} 
+                      />
+                    </div>
                     <textarea 
+                      id="importantPoints"
                       value={importantPoints} 
                       onChange={e => setImportantPoints(e.target.value)} 
                       rows={5}
@@ -550,13 +563,13 @@ export default function AdminPage() {
 
         .admin-content {
           display: grid;
-          grid-template-columns: 1fr;
+          grid-template-columns: minmax(0, 1fr);
           gap: 2rem;
         }
 
         @media (min-width: 1024px) {
           .admin-content {
-            grid-template-columns: 350px 1fr;
+            grid-template-columns: 350px minmax(0, 1fr);
           }
         }
 
@@ -613,6 +626,7 @@ export default function AdminPage() {
         }
 
         .main-form {
+          min-width: 0;
           padding: 2.5rem;
           border-radius: 1.5rem;
           background: white;

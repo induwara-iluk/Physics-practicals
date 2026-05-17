@@ -36,6 +36,8 @@ export default function MarkdownPreview({ content, label }: MarkdownPreviewProps
           border: 1px solid var(--border);
           border-radius: 1rem;
           border-left: 4px solid var(--primary);
+          max-width: 100%;
+          overflow: hidden;
         }
         .preview-label {
           font-size: 0.7rem;
@@ -49,6 +51,15 @@ export default function MarkdownPreview({ content, label }: MarkdownPreviewProps
           font-size: 1rem;
           color: var(--text);
           line-height: 1.6;
+          max-width: 100%;
+          overflow-x: auto;
+        }
+        .preview-box :global(img) {
+          max-width: 100%;
+          height: auto;
+          border-radius: 0.5rem;
+          display: block;
+          margin: 1rem 0;
         }
       `}</style>
     </div>

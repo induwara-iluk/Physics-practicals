@@ -320,9 +320,9 @@ export default function AdminQuestionForm({ selectedQuestionId, dbPracticals, on
         .status-message { padding: 0.5rem 1rem; background: #ecfdf5; color: #059669; border-radius: 0.5rem; font-weight: 600; border: 1px solid #d1fae5; }
         .save-btn { background: var(--primary); color: white; border: none; padding: 1rem 3rem; border-radius: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2); transition: all 0.2s; }
         .save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3); background: #4338ca; }
-        .editor-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem; align-items: start; }
+        .editor-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 2.5rem; align-items: start; }
         @media (max-width: 1024px) {
-          .editor-layout { grid-template-columns: 1fr; }
+          .editor-layout { grid-template-columns: minmax(0, 1fr); }
         }
         `}</style>
       </form>
