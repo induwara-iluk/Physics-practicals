@@ -58,8 +58,9 @@ const Footer = () => {
           </div>
           <div className="footer-nav">
             <Link href="/about">About Us</Link>
-            <Link href="/">Practicals</Link>
-            <Link href="/questions">Questions</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/terms">Terms</Link>
           </div>
         </div>
       </div>
