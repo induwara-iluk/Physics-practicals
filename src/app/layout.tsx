@@ -5,7 +5,6 @@ import "katex/dist/katex.min.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import GoogleAdsense from "@/components/GoogleAdsense";
 
 export const metadata: Metadata = {
   title: "Physics Practicals | Explore the Laws of Nature",
@@ -25,9 +24,13 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsense_id}`}
+          crossOrigin="anonymous"
+        />
       </head>
       <body>
-        <GoogleAdsense clientId={adsense_id} />
         {ga_id && <GoogleAnalytics ga_id={ga_id} />}
         <Navbar />
         <main>{children}</main>
