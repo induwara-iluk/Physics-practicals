@@ -4,6 +4,7 @@ export interface IQuestion extends Document {
   practicalId: mongoose.Types.ObjectId;
   questionNumber: string;
   title: string;
+  type?: string;
   source: {
     type: string;
     exam: string;
@@ -37,6 +38,7 @@ const QuestionSchema: Schema = new Schema({
   practicalId: { type: Schema.Types.ObjectId, ref: 'Practical', required: true },
   questionNumber: { type: String, required: true },
   title: { type: String, required: true },
+  type: { type: String, enum: ['past', 'model'], default: 'past' },
   source: {
     type: { type: String, default: 'past_paper' },
     exam: { type: String, default: 'GCE Advanced Level' },

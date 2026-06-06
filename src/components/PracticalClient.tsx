@@ -33,6 +33,13 @@ export default function PracticalClient({
 }) {
   const [isCompleted, setIsCompleted] = useState(false);
 
+  const pastPaperQuestions = relatedQuestions.filter(
+    (q) => q.type !== 'model' && (!q.source?.type || q.source?.type === 'past_paper')
+  );
+  const modelQuestions = relatedQuestions.filter(
+    (q) => q.type === 'model' || (q.source?.type && q.source?.type !== 'past_paper')
+  );
+
   useEffect(() => {
     const saved = localStorage.getItem('completedPracticals');
     if (saved) {
@@ -162,15 +169,15 @@ export default function PracticalClient({
         </section>
       )}
 
-      {/* 6. Related Questions */}
-      {relatedQuestions.length > 0 && (
-        <section className="section-card mb-12">
+      {/* 6. Past Paper Questions */}
+      {pastPaperQuestions.length > 0 && (
+        <section className="section-card mb-8">
           <h2 className="section-title">
             <span className="title-marker" style={{background: 'var(--primary)'}}></span>
-            Related Practice Questions
+            Past Paper Questions
           </h2>
           <div className="list-body">
-            {relatedQuestions.map((q) => (
+            {pastPaperQuestions.map((q) => (
               <Link 
                 key={q._id} 
                 href={`/question/${q._id}`} 
@@ -197,6 +204,54 @@ export default function PracticalClient({
                   </h3>
                   <span className="p-category">
                     {q.source?.year} • {q.source?.exam} • {q.difficulty}
+                  </span>
+                </div>
+                <div className="card-action">
+                  <svg className="item-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 7. Model Questions */}
+      {modelQuestions.length > 0 && (
+        <section className="section-card mb-12">
+          <h2 className="section-title">
+            <span className="title-marker" style={{background: 'var(--secondary)'}}></span>
+            Model Questions
+          </h2>
+          <div className="list-body">
+            {modelQuestions.map((q) => (
+              <Link 
+                key={q._id} 
+                href={`/question/${q._id}`} 
+                className="practical-card"
+                style={{ padding: '1.25rem' }}
+              >
+                <div className="p-number-box" style={{ 
+                  width: '3.5rem', 
+                  height: '3.5rem', 
+                  background: 'rgba(124, 58, 237, 0.08)', 
+                  borderRadius: '0.75rem', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: 'var(--secondary)',
+                  fontWeight: '800',
+                  fontSize: '1.1rem'
+                }}>
+                  Q{q.questionNumber}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <h3 className="p-title" style={{ margin: 0, fontSize: '1.1rem', marginBottom: '0.25rem' }}>
+                    {q.title || `Model Structured Essay`}
+                  </h3>
+                  <span className="p-category">
+                    Model Question • {q.difficulty}
                   </span>
                 </div>
                 <div className="card-action">

@@ -8,6 +8,7 @@ export default function QuestionsListPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedMedium, setSelectedMedium] = useState<'English' | 'Sinhala'>('English');
+  const [filterType, setFilterType] = useState<'all' | 'past_paper' | 'model_paper'>('all');
 
   useEffect(() => {
     const saved = localStorage.getItem('physicsMedium');
@@ -36,13 +37,23 @@ export default function QuestionsListPage() {
     const matchesSearch = q.title?.toLowerCase().includes(search.toLowerCase()) ||
       q.source?.year?.toString().includes(search) ||
       q.source?.exam?.toLowerCase().includes(search.toLowerCase());
-    return matchesMedium && matchesSearch;
+      
+    const isModel = q.type === 'model' || q.source?.type === 'model_paper';
+    let matchesType = true;
+    if (filterType === 'past_paper') {
+      matchesType = !isModel;
+    } else if (filterType === 'model_paper') {
+      matchesType = isModel;
+    }
+    
+    return matchesMedium && matchesSearch && matchesType;
   });
 
   const groupedYears = React.useMemo(() => {
     const groups: { [year: number]: any[] } = {};
     filteredQuestions.forEach(q => {
-      const year = q.source?.year || 0;
+      const isModel = q.type === 'model' || q.source?.type === 'model_paper';
+      const year = isModel ? 0 : (q.source?.year || 0);
       if (!groups[year]) groups[year] = [];
       groups[year].push(q);
     });
@@ -100,7 +111,7 @@ export default function QuestionsListPage() {
         </header>
 
         <main className="list-panel">
-          <div className="panel-search mb-8">
+          <div className="panel-search mb-8" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="search-box">
               <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -112,6 +123,29 @@ export default function QuestionsListPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
+            </div>
+            
+            <div className="filter-row">
+              <div className="type-toggle">
+                <button 
+                  onClick={() => setFilterType('all')}
+                  className={`filter-btn ${filterType === 'all' ? 'active' : ''}`}
+                >
+                  All Questions
+                </button>
+                <button 
+                  onClick={() => setFilterType('past_paper')}
+                  className={`filter-btn ${filterType === 'past_paper' ? 'active' : ''}`}
+                >
+                  Past Papers
+                </button>
+                <button 
+                  onClick={() => setFilterType('model_paper')}
+                  className={`filter-btn ${filterType === 'model_paper' ? 'active' : ''}`}
+                >
+                  Model Papers
+                </button>
+              </div>
             </div>
           </div>
 
@@ -137,8 +171,17 @@ export default function QuestionsListPage() {
                   <div key={year} className="year-group-box animate-up">
                     <div className="year-group-header">
                       <h2 className="year-group-title">
-                        <span className="year-badge">{year}</span>
-                        G.C.E. Advanced Level
+                        {year > 0 ? (
+                          <>
+                            <span className="year-badge">{year}</span>
+                            G.C.E. Advanced Level
+                          </>
+                        ) : (
+                          <>
+                            <span className="year-badge model-badge">Model</span>
+                            Model Papers & Questions
+                          </>
+                        )}
                       </h2>
                       <span className="year-count-badge">
                         {yearQuestions.length} {yearQuestions.length === 1 ? 'Question' : 'Questions'}
@@ -208,6 +251,42 @@ export default function QuestionsListPage() {
       </div>
 
       <style jsx>{`
+        .filter-row {
+          display: flex;
+          justify-content: flex-start;
+        }
+        .type-toggle {
+          display: flex;
+          background: rgba(148, 163, 184, 0.08);
+          padding: 0.3rem;
+          border-radius: 0.85rem;
+          border: 1px solid var(--border);
+          gap: 0.25rem;
+        }
+        .filter-btn {
+          border: none;
+          background: transparent;
+          padding: 0.45rem 1.25rem;
+          border-radius: 0.6rem;
+          font-family: inherit;
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: var(--text-muted);
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .filter-btn:hover {
+          color: var(--text);
+        }
+        .filter-btn.active {
+          background: white;
+          color: var(--primary);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 2px 4px rgba(0,0,0,0.01);
+        }
+        .model-badge {
+          background: var(--secondary) !important;
+          box-shadow: 0 2px 6px rgba(124, 58, 237, 0.25) !important;
+        }
         .year-group-box {
           background: white;
           border: 1px solid var(--border);

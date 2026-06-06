@@ -15,8 +15,16 @@ async function getStats() {
   try {
     await dbConnect();
     const practicalCount = await Practical.countDocuments();
-    const pastPaperCount = await Question.countDocuments({ "source.type": "past_paper" });
-    const modelQuestionCount = await Question.countDocuments({ "source.type": { $ne: "past_paper" } });
+    const pastPaperCount = await Question.countDocuments({
+      type: { $ne: 'model' },
+      "source.type": { $ne: 'model_paper' }
+    });
+    const modelQuestionCount = await Question.countDocuments({
+      $or: [
+        { type: "model" },
+        { "source.type": "model_paper" }
+      ]
+    });
     
     return {
       practicalCount,
