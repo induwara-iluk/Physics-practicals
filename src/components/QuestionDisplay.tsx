@@ -19,16 +19,29 @@ interface SubQuestionProps {
   };
   hideIndividualButtons?: boolean;
   forceShowAnswer?: boolean;
+  userAnswer: string;
+  onChangeUserAnswer: (val: string) => void;
+  evaluation?: {
+    score: number;
+    status: 'correct' | 'partially_correct' | 'incorrect';
+    feedback: string;
+  };
 }
 
-const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQuestionProps) => {
+const SubQuestionItem = ({
+  sq,
+  hideIndividualButtons,
+  forceShowAnswer,
+  userAnswer,
+  onChangeUserAnswer,
+  evaluation
+}: SubQuestionProps) => {
   const [showAnswer, setShowAnswer] = useState(false);
-  const [userAnswer, setUserAnswer] = useState('');
 
   const isVisible = forceShowAnswer || showAnswer;
 
   return (
-    <div className="sq-card">
+    <div className={`sq-card ${evaluation ? evaluation.status : ''}`}>
       {sq.imageUrl && (
         <img 
           src={fixImageUrls(sq.imageUrl)} 
@@ -68,9 +81,33 @@ const SubQuestionItem = ({ sq, hideIndividualButtons, forceShowAnswer }: SubQues
           placeholder="Type your answer here..."
           className="answer-textarea"
           value={userAnswer}
-          onChange={(e) => setUserAnswer(e.target.value)}
+          onChange={(e) => onChangeUserAnswer(e.target.value)}
         />
       </div>
+
+      {evaluation && (
+        <div className={`ai-evaluation-box ${evaluation.status}`}>
+          <div className="ai-evaluation-header">
+            <span className="ai-badge">
+              <svg style={{ width: '1.1rem', height: '1.1rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              AI Grade: {evaluation.score} / {sq.marks || 0} Marks
+            </span>
+            <span className={`ai-status-pill ${evaluation.status}`}>
+              {evaluation.status.replace('_', ' ')}
+            </span>
+          </div>
+          <div className="prose-content" style={{ marginTop: '0.5rem', fontSize: '1.05rem', color: 'inherit' }}>
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm, remarkMath]} 
+              rehypePlugins={[rehypeKatex, rehypeRaw]}
+            >
+              {preprocessMarkdown(evaluation.feedback)}
+            </ReactMarkdown>
+          </div>
+        </div>
+      )}
 
       {!hideIndividualButtons && (
         <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -116,8 +153,76 @@ interface QuestionDisplayProps {
 export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceShowAnswer }: QuestionDisplayProps) {
   const [showTopAnswer, setShowTopAnswer] = useState(false);
   const [topUserAnswer, setTopUserAnswer] = useState('');
+  
+  // State for AI grading
+  const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
+  const [evaluationResults, setEvaluationResults] = useState<any>(null);
+  const [singleEvaluation, setSingleEvaluation] = useState<any>(null);
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const isVisible = forceShowAnswer || showTopAnswer;
+
+  const handleCheckWithAI = async () => {
+    setIsLoadingAI(true);
+    setAiError(null);
+    try {
+      const reqBody: any = {
+        mainQuestionText: q.mainQuestionText,
+      };
+
+      if (q.subQuestions && q.subQuestions.length > 0) {
+        reqBody.subQuestions = q.subQuestions.map((sq: any) => {
+          const sqKey = sq.id || sq.part;
+          return {
+            id: sq.id || sq.part,
+            part: sq.part,
+            text: sq.text,
+            answer: sq.answer,
+            marks: sq.marks,
+            studentAnswer: userAnswers[sqKey] || '',
+          };
+        });
+      } else {
+        reqBody.answer = q.answer;
+        reqBody.marks = q.marks;
+        reqBody.studentAnswer = topUserAnswer;
+      }
+
+      const res = await fetch('/api/ai/check-answer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reqBody),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Failed to evaluate answers.');
+      }
+
+      const data = await res.json();
+      if (q.subQuestions && q.subQuestions.length > 0) {
+        const newEvals: Record<string, any> = {};
+        if (data.evaluations && Array.isArray(data.evaluations)) {
+          data.evaluations.forEach((item: any) => {
+            newEvals[item.subQuestionId] = {
+              score: item.score,
+              status: item.status,
+              feedback: item.feedback,
+            };
+          });
+        }
+        setEvaluationResults(newEvals);
+      } else {
+        setSingleEvaluation(data);
+      }
+    } catch (err: any) {
+      console.error(err);
+      setAiError(err.message || 'An unexpected error occurred.');
+    } finally {
+      setIsLoadingAI(false);
+    }
+  };
 
   return (
     <div className="question-card">
@@ -159,9 +264,20 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
 
       {q.subQuestions && q.subQuestions.length > 0 ? (
         <div className="q-subparts" style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {q.subQuestions.map((sq: any, i: number) => (
-            <SubQuestionItem key={i} sq={sq} hideIndividualButtons={hideIndividualButtons} forceShowAnswer={forceShowAnswer} />
-          ))}
+          {q.subQuestions.map((sq: any, i: number) => {
+            const sqKey = sq.id || sq.part;
+            return (
+              <SubQuestionItem
+                key={i}
+                sq={sq}
+                hideIndividualButtons={hideIndividualButtons}
+                forceShowAnswer={forceShowAnswer}
+                userAnswer={userAnswers[sqKey] || ''}
+                onChangeUserAnswer={(val) => setUserAnswers(prev => ({ ...prev, [sqKey]: val }))}
+                evaluation={evaluationResults?.[sqKey]}
+              />
+            );
+          })}
         </div>
       ) : (
         /* If no subquestions, show a main answer input and button */
@@ -172,25 +288,78 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
             value={topUserAnswer}
             onChange={(e) => setTopUserAnswer(e.target.value)}
           />
-          {!hideIndividualButtons && (
-            <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <button 
-                onClick={() => setShowTopAnswer(!showTopAnswer)}
-                className={`complete-btn ${showTopAnswer ? 'active' : ''}`}
+          
+          {/* AI Check Action Section for Single Question */}
+          <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {aiError && (
+              <div style={{ color: '#dc2626', background: '#fef2f2', border: '1px solid #fca5a5', padding: '0.75rem 1rem', borderRadius: '1rem', fontSize: '0.9rem', fontWeight: 600 }}>
+                ⚠️ {aiError}
+              </div>
+            )}
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <button
+                className="ai-check-btn"
+                onClick={handleCheckWithAI}
+                disabled={isLoadingAI}
+                style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem' }}
               >
-                {showTopAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
+                {isLoadingAI ? (
+                  <>
+                    <span className="spinner"></span>
+                    Evaluating...
+                  </>
+                ) : (
+                  <>
+                    <svg style={{ width: '1.1rem', height: '1.1rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Check with AI
+                  </>
+                )}
               </button>
-              
+              {!hideIndividualButtons && (
+                <button 
+                  onClick={() => setShowTopAnswer(!showTopAnswer)}
+                  className={`complete-btn ${showTopAnswer ? 'active' : ''}`}
+                  style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem' }}
+                >
+                  {showTopAnswer ? 'Hide Official Answer' : 'Check Official Answer'}
+                </button>
+              )}
               {q.marks && q.marks > 0 && (
-                <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: '800' }}>
+                <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: '800', marginLeft: 'auto' }}>
                   [{q.marks} Marks]
                 </div>
               )}
             </div>
+          </div>
+
+          {singleEvaluation && (
+            <div className={`ai-evaluation-box ${singleEvaluation.status}`} style={{ marginTop: '1.5rem' }}>
+              <div className="ai-evaluation-header">
+                <span className="ai-badge">
+                  <svg style={{ width: '1.1rem', height: '1.1rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  AI Grade: {singleEvaluation.score} / {q.marks || 0} Marks
+                </span>
+                <span className={`ai-status-pill ${singleEvaluation.status}`}>
+                  {singleEvaluation.status.replace('_', ' ')}
+                </span>
+              </div>
+              <div className="prose-content" style={{ marginTop: '0.5rem', fontSize: '1.05rem', color: 'inherit' }}>
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm, remarkMath]} 
+                  rehypePlugins={[rehypeKatex, rehypeRaw]}
+                >
+                  {preprocessMarkdown(singleEvaluation.feedback)}
+                </ReactMarkdown>
+              </div>
+            </div>
           )}
           
           {isVisible && q.answer && (
-            <div className="official-answer-box">
+            <div className="official-answer-box" style={{ marginTop: '1.5rem' }}>
               <span className="answer-label">Official Answer</span>
               <div className="prose-content" style={{ fontSize: '1.05rem' }}>
                 <ReactMarkdown 
@@ -205,9 +374,41 @@ export default function QuestionDisplay({ q, idx, hideIndividualButtons, forceSh
         </div>
       )}
 
-      {q.subQuestions && q.subQuestions.length > 0 && q.marks > 0 && (
-        <div style={{ marginTop: '2.5rem', fontSize: '1rem', color: 'var(--text-muted)', textAlign: 'right', fontWeight: '800' }}>
-          [Total: {q.marks} Marks]
+      {/* AI Check Action Section for Subquestions */}
+      {q.subQuestions && q.subQuestions.length > 0 && (
+        <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {aiError && (
+            <div style={{ color: '#dc2626', background: '#fef2f2', border: '1px solid #fca5a5', padding: '1rem', borderRadius: '1rem', fontSize: '0.95rem', fontWeight: 600 }}>
+              ⚠️ {aiError}
+            </div>
+          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+            <button
+              className="ai-check-btn"
+              onClick={handleCheckWithAI}
+              disabled={isLoadingAI}
+            >
+              {isLoadingAI ? (
+                <>
+                  <span className="spinner"></span>
+                  Evaluating answers...
+                </>
+              ) : (
+                <>
+                  <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Check Answers with AI
+                </>
+              )}
+            </button>
+
+            {q.marks > 0 && (
+              <div style={{ fontSize: '1.1rem', color: 'var(--text)', fontWeight: '800' }}>
+                [Total: {q.marks} Marks]
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

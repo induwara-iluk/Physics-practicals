@@ -24,12 +24,21 @@ interface Practical {
   practicalNumber?: number;
 }
 
+interface NavPractical {
+  title: string;
+  slug: string;
+}
+
 export default function PracticalClient({ 
   practical, 
-  relatedQuestions = [] 
+  relatedQuestions = [],
+  prevPractical = null,
+  nextPractical = null
 }: { 
   practical: Practical, 
-  relatedQuestions?: any[] 
+  relatedQuestions?: any[],
+  prevPractical?: NavPractical | null,
+  nextPractical?: NavPractical | null
 }) {
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -263,6 +272,41 @@ export default function PracticalClient({
             ))}
           </div>
         </section>
+      )}
+
+      {/* 8. Practical Navigation */}
+      {(prevPractical || nextPractical) && (
+        <nav className="practical-navigation" aria-label="Practical Navigation">
+          {prevPractical ? (
+            <Link href={`/practical/${prevPractical.slug}`} className="nav-button-card prev-card">
+              <span className="nav-button-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Previous Practical
+              </span>
+              <span className="nav-button-title">{prevPractical.title.replace(/^\d+\.\s*/, '')}</span>
+            </Link>
+          ) : (
+            <div className="nav-button-placeholder" />
+          )}
+
+          {nextPractical ? (
+            <Link href={`/practical/${nextPractical.slug}`} className="nav-button-card next-card">
+              <span className="nav-button-label">
+                Next Practical
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+              <span className="nav-button-title">{nextPractical.title.replace(/^\d+\.\s*/, '')}</span>
+            </Link>
+          ) : (
+            <div className="nav-button-placeholder" />
+          )}
+        </nav>
       )}
     </div>
   );

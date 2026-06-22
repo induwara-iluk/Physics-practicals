@@ -786,3 +786,219 @@
   display: block;
   margin-bottom: 0.75rem;
 }
+
+/* Navigation Buttons for Practicals */
+.practical-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+
+.nav-button-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  border-radius: 2rem;
+  background: white;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+}
+
+.nav-button-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.08);
+  border-color: var(--primary);
+}
+
+.nav-button-card.prev-card {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.nav-button-card.next-card {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.nav-button-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-button-card:hover .nav-button-label {
+  color: var(--primary);
+}
+
+.nav-button-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+  transition: color 0.2s;
+}
+
+.nav-button-card:hover .nav-button-title {
+  color: var(--primary);
+}
+
+.nav-button-placeholder {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .practical-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* AI Evaluation Styles */
+.ai-evaluation-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1.25rem;
+  border: 1px dashed var(--border);
+  transition: all 0.3s var(--ease);
+}
+
+.ai-evaluation-box.correct {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #14532d;
+}
+
+.ai-evaluation-box.partially_correct {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #78350f;
+}
+
+.ai-evaluation-box.incorrect {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #7f1d1d;
+}
+
+.ai-evaluation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ai-badge {
+  font-size: 0.9rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ai-evaluation-box.correct .ai-badge {
+  color: #166534;
+}
+.ai-evaluation-box.partially_correct .ai-badge {
+  color: #92400e;
+}
+.ai-evaluation-box.incorrect .ai-badge {
+  color: #991b1b;
+}
+
+.ai-status-pill {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ai-status-pill.correct {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.ai-status-pill.partially_correct {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.ai-status-pill.incorrect {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Border styling for evaluated questions */
+.sq-card.correct {
+  border: 1.5px solid #22c55e !important;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.05);
+}
+
+.sq-card.partially_correct {
+  border: 1.5px solid #f59e0b !important;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.05);
+}
+
+.sq-card.incorrect {
+  border: 1.5px solid #ef4444 !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.05);
+}
+
+/* AI check button loading states */
+.ai-check-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  padding: 0.85rem 2rem;
+  border-radius: 9999px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  transition: all 0.3s var(--ease);
+}
+
+.ai-check-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  opacity: 0.95;
+}
+
+.ai-check-btn:disabled {
+  background: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+

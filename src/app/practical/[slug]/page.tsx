@@ -32,6 +32,33 @@ async function getRelatedQuestions(practicalId: string) {
   }
 }
 
+async function getAdjacentPracticals(currentMedium: string, currentSlug: string) {
+  try {
+    await dbConnect();
+    const mediumQuery = currentMedium || 'English';
+    const practicals = await Practical.find({ medium: mediumQuery })
+      .select('title slug practicalNumber')
+      .lean();
+    
+    const sorted = JSON.parse(JSON.stringify(practicals)).sort((a: any, b: any) => {
+      const numA = parseFloat(a.practicalNumber) || 0;
+      const numB = parseFloat(b.practicalNumber) || 0;
+      return numA - numB;
+    });
+
+    const currentIndex = sorted.findIndex((p: any) => p.slug === currentSlug);
+    if (currentIndex === -1) return { prev: null, next: null };
+
+    const prev = currentIndex > 0 ? { title: sorted[currentIndex - 1].title, slug: sorted[currentIndex - 1].slug } : null;
+    const next = currentIndex < sorted.length - 1 ? { title: sorted[currentIndex + 1].title, slug: sorted[currentIndex + 1].slug } : null;
+
+    return { prev, next };
+  } catch (error) {
+    console.error('Failed to fetch adjacent practicals:', error);
+    return { prev: null, next: null };
+  }
+}
+
 export default async function PracticalPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const practical = await getPractical(slug);
@@ -50,6 +77,8 @@ export default async function PracticalPage({ params }: { params: Promise<{ slug
       </div>
     );
   }
+
+  const { prev, next } = await getAdjacentPracticals(practical.medium, slug);
 
   return (
     <div className="page-wrapper">
@@ -72,6 +101,8 @@ export default async function PracticalPage({ params }: { params: Promise<{ slug
         <PracticalClient 
           practical={practical} 
           relatedQuestions={await getRelatedQuestions(practical._id)} 
+          prevPractical={prev}
+          nextPractical={next}
         />
       </div>
     </div>
