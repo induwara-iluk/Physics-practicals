@@ -5,10 +5,11 @@ import "katex/dist/katex.min.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import FeedbackPopup from "@/components/FeedbackPopup";
 
 export const metadata: Metadata = {
-  title: "Physics Practicals | Explore the Laws of Nature",
-  description: "A premium platform for exploring physics experiments and simulations.",
+  title: "Physics Practicals | GCE(A/L) | Self Practice",
+  description: "Learn Practicals , Practise Past paper Questions , Get ready for upcoming Exam using Model papers",
 };
 
 export default function RootLayout({
@@ -35,7 +36,9 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <FeedbackPopup />
       </body>
     </html>
   );
 }
+

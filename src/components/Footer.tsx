@@ -10,7 +10,28 @@ const Footer = () => {
           <div className="footer-brand">
             <Link href="/" className="footer-logo">
               <div className="logo-box">
-                <span className="logo-symbol">Φ</span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ color: 'white', display: 'block' }}
+                >
+                  {/* Main scale beam */}
+                  <path d="M3 9h18v2H3z" fill="currentColor" fillOpacity="0.1" />
+                  {/* Tick marks */}
+                  <path d="M6 9v2M9 9v2M12 9v2M15 9v2M18 9v2" strokeWidth="1.5" />
+                  {/* Fixed Jaw (left) */}
+                  <path d="M3 9V3c0-0.8 0.7-1.5 1.5-1.5H5" />
+                  <path d="M3 11v7c0 1.1 0.9 2 2 2h0.5" />
+                  {/* Sliding Jaw (center) */}
+                  <path d="M11 9V4c0-0.8 0.7-1.5 1.5-1.5H13" />
+                  <path d="M11 11v6c0 1.1 0.9 2 2 2h0.5" />
+                </svg>
               </div>
               <span className="logo-text">ilukpracticals.online</span>
             </Link>

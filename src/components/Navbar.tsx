@@ -64,16 +64,7 @@ const Navbar = () => {
         <div className="nav-container">
           {/* Logo */}
           <Link href="/" className="logo">
-            <div className="logo-box">
-              <span className="logo-symbol">Φ</span>
-            </div>
-
-            <div className="logo-content">
-              <span className="logo-title">
-                PHYSICS<span className="logo-dim">LAB</span>
-              </span>
-              <span className="logo-subtitle">Practical Practice Platform</span>
-            </div>
+            <img src="/nav_bar.png" alt="Physics Practicals Logo" className="logo-image-banner" />
           </Link>
 
           {/* Navigation Links */}
@@ -215,10 +206,20 @@ const Navbar = () => {
         .logo {
           display: flex;
           align-items: center;
-          gap: 0.9rem;
           text-decoration: none;
-          color: var(--text);
           flex-shrink: 0;
+        }
+
+        .logo-image-banner {
+          width: 200px;
+          height: auto;
+          display: block;
+          object-fit: contain;
+          transition: transform 0.2s ease;
+        }
+
+        .logo-image-banner:hover {
+          transform: scale(1.02);
         }
 
         .logo-box {
@@ -237,9 +238,8 @@ const Navbar = () => {
         .logo-symbol {
           position: relative;
           z-index: 1;
-          font-size: 1.35rem;
-          font-weight: 800;
           color: white;
+          display: block;
         }
 
         .logo-content {

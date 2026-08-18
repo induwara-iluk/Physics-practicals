@@ -23,7 +23,6 @@ const Hero = ({ practicalCount, pastPaperCount, modelQuestionCount }: HeroProps)
       </div>
 
       <div className="hero-content animate-fade-in">
-
         <h1 className="hero-title">
           <img src="https://flagcdn.com/lk.svg" width="90" alt="SL Flag" style={{ borderRadius: '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} /> Sri Lanka’s Complete <span className="highlight">A/L Physics</span> Practical Platform
         </h1>
@@ -101,7 +100,7 @@ const Hero = ({ practicalCount, pastPaperCount, modelQuestionCount }: HeroProps)
           font-style: italic;
           font-weight: 500;
           color: #4f46e5;
-          opacity: 0.12; /* Increased visibility */
+          opacity: 0.12;
           font-size: 2.5rem;
           user-select: none;
           animation: float 10s ease-in-out infinite;
@@ -126,7 +125,7 @@ const Hero = ({ practicalCount, pastPaperCount, modelQuestionCount }: HeroProps)
           height: 200px;
           background-image: radial-gradient(circle at 2px 2px, #4f46e5 1px, transparent 0);
           background-size: 40px 40px;
-          opacity: 0.08; /* Increased visibility */
+          opacity: 0.08;
           mask-image: linear-gradient(to right, transparent, black, transparent);
         }
 
@@ -317,6 +316,7 @@ const Hero = ({ practicalCount, pastPaperCount, modelQuestionCount }: HeroProps)
           .hero-trust { gap: 0.75rem; flex-direction: column; align-items: center; }
           .trust-item { font-size: 0.8rem; padding: 0.4rem 0.75rem; width: fit-content; }
         }
+
       `}</style>
     </section>
   );
