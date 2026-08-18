@@ -1,15 +1,43 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 const FeedbackPopup = () => {
+  const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    // Check if user has already dismissed or submitted the feedback form
-    const isDismissed = localStorage.getItem('iluk_feedback_dismissed');
-    if (!isDismissed) {
+    // 1. Increment page views on every pathname change
+    const views = parseInt(localStorage.getItem('iluk_feedback_page_views') || '0', 10);
+    const newViews = views + 1;
+    localStorage.setItem('iluk_feedback_page_views', newViews.toString());
+
+    // 2. Check if user already submitted the feedback form
+    const isSubmitted = localStorage.getItem('iluk_feedback_submitted') === 'true';
+    if (isSubmitted) {
+      return;
+    }
+
+    // 3. Migration: if they dismissed using the old static flag, convert to dismissed_at
+    if (localStorage.getItem('iluk_feedback_dismissed') === 'true') {
+      localStorage.removeItem('iluk_feedback_dismissed');
+      localStorage.setItem('iluk_feedback_dismissed_at', newViews.toString());
+    }
+
+    // 4. If the popup is already showing, keep it rendered and visible across page changes
+    if (isRendered) {
+      return;
+    }
+
+    // 5. Check if enough page views have passed since the last dismissal
+    const dismissedAtViews = parseInt(localStorage.getItem('iluk_feedback_dismissed_at') || '0', 10);
+    
+    // Show if never dismissed, or if at least 5 page views have occurred since dismissal
+    const shouldShow = dismissedAtViews === 0 || (newViews - dismissedAtViews) >= 5;
+
+    if (shouldShow) {
       // Delay the popup showing by 3.5 seconds for a premium, non-intrusive feel
       const timer = setTimeout(() => {
         setIsRendered(true);
@@ -19,11 +47,13 @@ const FeedbackPopup = () => {
 
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [pathname, isRendered]);
 
   const handleDismiss = () => {
     setIsVisible(false);
-    localStorage.setItem('iluk_feedback_dismissed', 'true');
+    // Track page views count at which they dismissed
+    const currentViews = parseInt(localStorage.getItem('iluk_feedback_page_views') || '0', 10);
+    localStorage.setItem('iluk_feedback_dismissed_at', currentViews.toString());
     // Remove from DOM after fade-out animation completes
     setTimeout(() => setIsRendered(false), 400);
   };
@@ -31,8 +61,10 @@ const FeedbackPopup = () => {
   const handleFeedbackClick = () => {
     // Open feedback form
     window.open('https://forms.gle/tu7Yu39GngQczAqo8', '_blank', 'noopener,noreferrer');
-    // Dismiss popup once they click through
-    handleDismiss();
+    // Set submitted flag so they are never prompted again
+    localStorage.setItem('iluk_feedback_submitted', 'true');
+    setIsVisible(false);
+    setTimeout(() => setIsRendered(false), 400);
   };
 
   if (!isRendered) return null;

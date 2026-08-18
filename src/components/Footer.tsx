@@ -80,6 +80,7 @@ const Footer = () => {
           <div className="footer-nav">
             <Link href="/about">About Us</Link>
             <Link href="/contact">Contact</Link>
+            <a href="https://forms.gle/tu7Yu39GngQczAqo8" target="_blank" rel="noopener noreferrer">Give us feedback</a>
             <Link href="/privacy-policy">Privacy Policy</Link>
             <Link href="/terms">Terms</Link>
           </div>
